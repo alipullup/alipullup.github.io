@@ -1,5 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Ali's Posts</title><link href="https://alipullup.github.io/" rel="alternate"></link><link href="https://alipullup.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://alipullup.github.io/</id><updated>2016-11-20T00:00:00-05:00</updated><entry><title>Gigabit Ethernet Protocol</title><link href="https://alipullup.github.io/gigabit-ethernet-protocol.html" rel="alternate"></link><published>2016-11-20T00:00:00-05:00</published><updated>2016-11-20T00:00:00-05:00</updated><author><name>Ali Imran</name></author><id>tag:alipullup.github.io,2006-01-24:gigabit-ethernet-protocol.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Ali's Posts</title><link href="https://alipullup.github.io/" rel="alternate"></link><link href="https://alipullup.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://alipullup.github.io/</id><updated>2016-11-20T00:00:00-05:00</updated><entry><title>My experience with micro-services</title><link href="https://alipullup.github.io/my-experience-with-micro-services.html" rel="alternate"></link><published>2016-09-16T00:00:00-04:00</published><updated>2016-09-16T00:00:00-04:00</updated><author><name>Ali Imran</name></author><id>tag:alipullup.github.io,2016-09-16:my-experience-with-micro-services.html</id><summary type="html">&lt;h1&gt;Overview&lt;/h1&gt;
+&lt;p&gt;I wrote the following after my experience in architecting a system around &lt;a href="https://en.wikipedia.org/wiki/Microservices"&gt;microservices&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The implementation did not go as smoothly as expected, and I wanted to reflect on what went wrong.&lt;/p&gt;
+&lt;p&gt;To channel Jamie Z:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Some people, when faced with a problem think &amp;ldquo;I know, I&amp;rsquo;ll use microservices.&amp;rdquo; Now they have 2^N problems.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I think we used microservices for the wrong reasons:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;If you&amp;rsquo;re worried about future extensibility, then use a well defined interface to a library.&lt;/li&gt;
+&lt;li&gt;If you&amp;rsquo;re worried about the scheduling/interaction between different people or groups, then use coordinated sprints or mock implementations.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;Our application:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Used to be monolithic&lt;/li&gt;
+&lt;li&gt;It was split into different programs because different people worked on different pieces&lt;/li&gt;
+&lt;li&gt;Each service was a layer: our hope was to replace each layer with something new, as needed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Old architecture:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Application ---&amp;gt; Resource X
+    |----------&amp;gt; Resource Y
+    +----------&amp;gt; Resource Z
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;New architecture:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Application ---&amp;gt; Resource X
+    |
+Application Y -&amp;gt; Resource Y
+    |
+Application Z -&amp;gt; Resource Z
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Good:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Work &amp;amp; deploy independently&lt;/li&gt;
+&lt;li&gt;Isolate errors&lt;/li&gt;
+&lt;li&gt;Test independently&lt;/li&gt;
+&lt;li&gt;Well-defined external interface&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Bad:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Needed some sort of supervisor process when one application crashed&lt;/li&gt;
+&lt;li&gt;Needed backward/forward compatibility checks&lt;/li&gt;
+&lt;li&gt;More error scenarios (Application Y and Application Z could fail independently)&lt;/li&gt;
+&lt;li&gt;Hard to diagnose errors&lt;/li&gt;
+&lt;li&gt;Hard to diagnose performance issues&lt;ul&gt;
+&lt;li&gt;Have to look through multiple log files and correlate log file entries&lt;/li&gt;
+&lt;li&gt;Have to correlate multiple counters&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="programming"></category></entry><entry><title>Disk Encryption Overview</title><link href="https://alipullup.github.io/disk-encryption-overview.html" rel="alternate"></link><published>2016-11-20T00:00:00-05:00</published><updated>2016-11-20T00:00:00-05:00</updated><author><name>Ali Imran</name></author><id>tag:alipullup.github.io,2008-09-16:disk-encryption-overview.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This document describes disk encryption implemented using a combination of software and FPGA.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;--Data--&amp;gt;FPGA--&amp;gt;Disks
+           |
+    Microcontroller
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The data was encrypted using AES, in counter mode, with flexible key width.&lt;/p&gt;
+&lt;p&gt;For various reasons, we did not use an &lt;a href="https://en.wikipedia.org/wiki/Authenticated_encryption"&gt;authenticated encryption&lt;/a&gt; mode.&lt;/p&gt;
+&lt;p&gt;A FPGA was responsible for encryption, to keep up with the high data rate. Control software running on a microcontroller was responsible for loading up the AES key schedule during bulk streaming operations.&lt;/p&gt;
+&lt;p&gt;During normal operations, the microcontroller went &lt;em&gt;through&lt;/em&gt; the FPGA to access the disks. Software running on the microcontroller was responsible for managing the disks otherwise.&lt;/p&gt;
+&lt;h1&gt;Encryption Overview&lt;/h1&gt;
+&lt;p&gt;We encrypt all data before writing to disk. There are two reasons for
+doing this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Quick erase: destroy all data by destroying the keys.&lt;/li&gt;
+&lt;li&gt;Secure transport: securely transport the disks by transmitting the keys separately.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We begin by describing how data flows through the system, and then how quick erase and secure transport are implemented.&lt;/p&gt;
+&lt;h2&gt;Data Flow Models&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Encryption Data Flow" src="images/encryption_overview_data_flow.png" /&gt;&lt;/p&gt;
+&lt;h2&gt;Encryption pseudo-code&lt;/h2&gt;
+&lt;p&gt;This is a simplified way of looking at encryption: a function is given
+data from a disk, and it encrypts that data and writes it out. In
+reality, this done in parallel by the FPGA.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    Encrypt_Disk_Data (Meta  : Metadata, 
+                       Sess  : Session_Info,
+                       D     : int, -- disk number
+                       Data  : UINT128[])
+     --  Depending on Meta.Mode, this will either read a key 
+     --  from disk, or read a key from the disk and combine it
+     --  with a key from removable storage.
+     Key : UINT128 := Get_Disk_Key (Meta, D);
+     --  Initialize encryption context using the given key.
+     Ctx : Aes_Context_Type := AES_Initialize (Key);
+     --  The counter is a 128-bit value that is derived using:
+     --  - The disk seed for disk D, which was originally derived 
+     --    from the disk serial number.
+     --  - The session seed, which is a random 64-bit number, 
+     --    chosen session creation.
+     Counter := Initialize_Counter (Meta, Sess, D);
+     For I = 0 to length (Data) loop
+       Increment_Counter (Counter);
+       E : UINT128 := AES_Counter_Encrypt (Ctx, Counter, Data[I]);
+       Disk_Write (D, I, E);
+     End;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Where:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;UINT128&lt;/code&gt; is an unsigned 128-bit quantity.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Data&lt;/code&gt; is an array of 128-bit values.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Get_Disk_Key&lt;/code&gt;, &lt;code&gt;AES_Initialize&lt;/code&gt;, &lt;code&gt;AES_Counter_Encrypt&lt;/code&gt;,
+  &lt;code&gt;Initialize_Counter&lt;/code&gt;, &lt;code&gt;Increment_Counter&lt;/code&gt;, and &lt;code&gt;Disk_Write&lt;/code&gt;
+  are external functions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Critical Analysis&lt;/h1&gt;
+&lt;p&gt;A formal security proof is not presented here. However, it is noted
+that the security of data on disks depends entirely upon:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Disk keys used for encryption. Below we will lay out the threat
+   model we protect against.&lt;/li&gt;
+&lt;li&gt;Counter value. We&amp;rsquo;ve taken care to ensure that the counter is
+   globally unique. This is addressed in the section titled &lt;code&gt;Counter&lt;/code&gt;
+   above.&lt;/li&gt;
+&lt;li&gt;AES implementation. The FPGA implementation has been tested with
+   known vectors, and also been verified by decrypting the data with a
+   known-good software implementation. We talk some more about this
+   below in &lt;code&gt;Encryption Primitives Used&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;AES usage. We&amp;rsquo;re using the well known counter mode for AES. In the
+   section &lt;code&gt;Counter mode weaknesses&lt;/code&gt; we talk about this some more.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Threat Model&lt;/h2&gt;
+&lt;p&gt;We assume that the recorder operates in a secure environment. Thus
+there are no protections against physical attacks.&lt;/p&gt;
+&lt;p&gt;(REMOVED)&lt;/p&gt;
+&lt;h2&gt;Encryption Primitives Used&lt;/h2&gt;
+&lt;p&gt;The following encryption primitives are used. We
+also given some implementation details:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;AES(FGPA)&lt;/strong&gt;: A hardware (FPGA) implementation of AES is used
+  for encryption of optical data.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AES(C)&lt;/strong&gt;: A reference implementation of AES (written in the
+  &lt;code&gt;C&lt;/code&gt; programming language) is used by the software to encrypt metadata written to disk.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SHA256&lt;/strong&gt;:  (REMOVED)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SHA256 HMAC&lt;/strong&gt;: (REMOVED)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MD5&lt;/strong&gt;: (REMOVED)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;(REMOVED) RNG&lt;/strong&gt;: The (REMOVED) random number generator is  used to generate:&lt;ul&gt;
+&lt;li&gt;The per-disk keys during initial formatting.&lt;/li&gt;
+&lt;li&gt;The session ID start during initial formatting (XX-bit number, see &lt;code&gt;Software Entities&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;The session seed during session creation (YY-bit number, see &lt;code&gt;Software Entities&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Counter mode weaknesses&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Data integrity&lt;/strong&gt;: Counter mode doesn&amp;rsquo;t provide any message
+  integrity. There is no MAC used, thus it
+  possible to change the data on disk.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Key reuse&lt;/strong&gt;: The key is randomly generated, and given a good RNG,
+  the probability of key use is extremely low.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Counter uniqueness&lt;/strong&gt;: The counter is chosen to be globally unique. Thus it is very unlikely that the same counter is used for two separate sessions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Entropy&lt;/h2&gt;
+&lt;p&gt;Entropy in an embedded environment is a difficult problem. The system may be rebooted frequently and the random bytes may be needed soon after a reboot.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We can&amp;rsquo;t rely on network I/O to generate random bytes. The client may be using a crossover cable.&lt;/li&gt;
+&lt;li&gt;We don&amp;rsquo;t get a lot of entropy from disks, as the disks are only used when requested by the user.&lt;/li&gt;
+&lt;li&gt;We can&amp;rsquo;t rely on user interaction to generate random bytes.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;(REMOVED)&lt;/p&gt;</summary><category term="encryption"></category></entry><entry><title>Gigabit Ethernet Protocol</title><link href="https://alipullup.github.io/gigabit-ethernet-protocol.html" rel="alternate"></link><published>2016-11-20T00:00:00-05:00</published><updated>2016-11-20T00:00:00-05:00</updated><author><name>Ali Imran</name></author><id>tag:alipullup.github.io,2006-01-24:gigabit-ethernet-protocol.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data packet, wait the IPG amount, then send the next packet.&lt;/li&gt;
@@ -719,4 +884,397 @@ seconds.  Thus, the achieved bandwidth is:&lt;/p&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2&gt;Packet Loss&lt;/h2&gt;
-&lt;p&gt;(Omitted)&lt;/p&gt;</summary><category term="programming"></category><category term="networking"></category><category term="protocol"></category></entry></feed>
+&lt;p&gt;(Omitted)&lt;/p&gt;</summary><category term="programming"></category><category term="networking"></category><category term="protocol"></category></entry><entry><title>Under the Hood of Ada</title><link href="https://alipullup.github.io/under-the-hood-of-ada.html" rel="alternate"></link><published>2016-11-20T00:00:00-05:00</published><updated>2016-11-20T00:00:00-05:00</updated><author><name>Ali Imran</name></author><id>tag:alipullup.github.io,2005-04-01:under-the-hood-of-ada.html</id><summary type="html">&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;The following is an old document I wrote when debugging the GCC Ada front-end for MIPS. Our platform was not officially supported and I was tasked with finding and fixing various issued related to exceptions, and tasking.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;I&amp;rsquo;ve used that &lt;code&gt;-gnatG&lt;/code&gt; switch to look at the processed source produced by GNAT and done some analysis.  What follows is a summary and highlights from that analysis.&lt;/p&gt;
+&lt;h1&gt;Exceptions&lt;/h1&gt;
+&lt;p&gt;The exception&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="n"&gt;Blocking_Error&lt;/span&gt;              &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;exception&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is turned into&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; subtype disk__fpga__Tblocking_errorES is string (1 .. 25);
+   disk__fpga__blocking_errorE : constant string (1 .. 25) :=
+     &amp;quot;DISK.FPGA.BLOCKING_ERROR[&amp;quot;00&amp;quot;]&amp;quot;;
+   disk__fpga__R2s : constant access_character := access_character!(
+     disk__fpga__blocking_errorE&amp;#39;address);
+   disk__fpga__blocking_error : exception;
+   system__exception_table__register_exception (
+     system__standard_library__exception_data_ptr!(
+     disk__fpga__blocking_error&amp;#39;unrestricted_access));
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That&amp;rsquo;s all exceptions seem to be under the hood.&lt;/p&gt;
+&lt;h1&gt;Records, Arrays and Discreet Types&lt;/h1&gt;
+&lt;p&gt;Records are represented very efficiently.  I see no overhead, and they
+seem to work just like C style structures.&lt;/p&gt;
+&lt;p&gt;The same holds true for arrays and and floating and integer types.&lt;/p&gt;
+&lt;h1&gt;Enumeration Types&lt;/h1&gt;
+&lt;p&gt;Enumeration types are surprisingly efficient.  Basically whenever you
+declare an enumeration:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;myenum&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;somevalue&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;othervalue&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It&amp;rsquo;s turned into:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;myenum&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;somevalue&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;othervalue&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="no"&gt;myenumS&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;constant&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="mi"&gt;19&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;SOMEVALUEOTHERVALUE&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="no"&gt;myenumI&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;constant&lt;/span&gt; &lt;span class="kr"&gt;array&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kr"&gt;of&lt;/span&gt; &lt;span class="n"&gt;integer_8&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So it&amp;rsquo;s quite easy to figure out the string or integer value of an
+enumeration type.&lt;/p&gt;
+&lt;h1&gt;Initialization of Types&lt;/h1&gt;
+&lt;p&gt;It seems that a decent sized chunk of code is generated every time we
+have a record type with a default value in there, e.g.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;my_record&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt; &lt;span class="kr"&gt;record&lt;/span&gt;
+        &lt;span class="n"&gt;something&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;some_type&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt; &lt;span class="n"&gt;some_value&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kr"&gt;end record&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Ada will generate code wherever this type is declared, and also any
+time this record is part of another record, the other record will have
+code generated as well.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;other_record&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt; &lt;span class="kr"&gt;record&lt;/span&gt;
+        &lt;span class="n"&gt;my_record_type&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;my_record&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;-- no default value&lt;/span&gt;
+    &lt;span class="kr"&gt;end record&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Will still have code generated to initialize it.  This will cause the overhead of two function calls.  (1) To initialize &amp;lsquo;other_record&amp;rsquo; which will (2) call the code to initialize &amp;lsquo;my_record&amp;rsquo;.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s especially bad in arrays, e.g.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;other_record_array&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;integer&lt;/span&gt; &lt;span class="nv"&gt;range&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&amp;gt;)&lt;/span&gt; &lt;span class="kr"&gt;of&lt;/span&gt; &lt;span class="n"&gt;other_record&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;will end up generating something like:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;initialize_other_array&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;other_reccord_array&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+&lt;span class="kr"&gt;begin&lt;/span&gt;
+    &lt;span class="kr"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;&amp;#39;&lt;/span&gt;&lt;span class="na"&gt;range&lt;/span&gt; &lt;span class="kr"&gt;loop&lt;/span&gt;
+        &lt;span class="kd"&gt;procedure&lt;/span&gt;&lt;span class="nf"&gt;_to_initialize_other_record&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+    &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="kr"&gt;loop&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;end&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So we get Array&amp;rsquo;Length * 2 function calls in this case to create the array.&lt;/p&gt;
+&lt;h1&gt;Protected Types / Objects&lt;/h1&gt;
+&lt;p&gt;These seem to be implemented in a pretty straight forward manner.  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;There is a mutex placed in the package&lt;/li&gt;
+&lt;li&gt;For all publically visibile procedures / functions, a N and P version are declared. The N is non protected version, and the P is the protected version.&lt;/li&gt;
+&lt;li&gt;For all private procedures / function, an N version is declared.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Let me illustrate:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;package&lt;/span&gt; &lt;span class="nc"&gt;foo&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+    &lt;span class="kd"&gt;protected&lt;/span&gt; &lt;span class="n"&gt;bar&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+        &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nf"&gt;x&lt;/span&gt; &lt;span class="nf"&gt;return&lt;/span&gt; &lt;span class="nf"&gt;boolean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;private&lt;/span&gt;
+        &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nf"&gt;y&lt;/span&gt; &lt;span class="nf"&gt;return&lt;/span&gt; &lt;span class="nf"&gt;boolean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;bar&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;foo&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Gets turned into:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;package&lt;/span&gt; &lt;span class="nc"&gt;foo&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+    &lt;span class="kd"&gt;protected&lt;/span&gt; &lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;barT&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+        &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nf"&gt;x&lt;/span&gt; &lt;span class="nf"&gt;return&lt;/span&gt; &lt;span class="nf"&gt;boolean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;private&lt;/span&gt;
+        &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nf"&gt;y&lt;/span&gt; &lt;span class="nf"&gt;return&lt;/span&gt; &lt;span class="nf"&gt;boolean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;bar&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;bar&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;barT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;foo__barTV&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt; &lt;span class="kr"&gt;limited&lt;/span&gt; &lt;span class="kr"&gt;record&lt;/span&gt;
+        &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;aliased&lt;/span&gt;
+            &lt;span class="n"&gt;system__tasking__protected_objects__protection&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kr"&gt;end record&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="c1"&gt;-- Code to initialize barT, which will set up its priority&lt;/span&gt;
+    &lt;span class="c1"&gt;-- and initialize foo__barTV.  I don&amp;#39;t know where an instance&lt;/span&gt;
+    &lt;span class="c1"&gt;-- of the  object foo__barTV is actually declared.&lt;/span&gt;
+
+    &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nf"&gt;foo__barT__xN&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;_object&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;out&lt;/span&gt;  &lt;span class="nv"&gt;foo__barTV&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="kr"&gt;return&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nf"&gt;foo__barT__xP&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;_object&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;out&lt;/span&gt;  &lt;span class="nv"&gt;foo__barTV&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="kr"&gt;return&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nf"&gt;foo__barT__yN&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;_object&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;out&lt;/span&gt;  &lt;span class="nv"&gt;foo__barTV&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="kr"&gt;return&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;foo&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Overhead with Protected Types&lt;/h1&gt;
+&lt;p&gt;As we&amp;rsquo;ve seen, there is a P (protected) version of all functions and
+procedures declared. Here is what the body of a null procedure (body
+is just &amp;lsquo;null&amp;rsquo;) is expanded to:&lt;/p&gt;
+&lt;p&gt;NOTE:  The procedure was called &amp;lsquo;p&amp;rsquo;, and it was in a procedure called test that declared a type test_type.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test__test_typePT__pP&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;_object&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;out&lt;/span&gt; &lt;span class="nv"&gt;test__test_typeTV&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+   &lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test__test_typePT__pP___clean&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+   &lt;span class="kr"&gt;begin&lt;/span&gt;
+      &lt;span class="n"&gt;system__tasking__protected_objects__unlock&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;&amp;#39;&lt;/span&gt;
+        &lt;span class="n"&gt;unchecked_access&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="n"&gt;system__soft_links__abort_undefer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test__test_typePT__pP___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;begin&lt;/span&gt;
+   &lt;span class="n"&gt;system__soft_links__abort_defer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="n"&gt;system__tasking__protected_objects__lock&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;&amp;#39;&lt;/span&gt;
+     &lt;span class="n"&gt;unchecked_access&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+   &lt;span class="nl"&gt;B3b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;begin&lt;/span&gt;
+      &lt;span class="n"&gt;test__test_typePT__pN&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+   &lt;span class="kr"&gt;exception&lt;/span&gt;
+      &lt;span class="kr"&gt;when&lt;/span&gt; &lt;span class="kr"&gt;all&lt;/span&gt; &lt;span class="kr"&gt;others&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt;
+         &lt;span class="nl"&gt;B6b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;declare&lt;/span&gt;
+            &lt;span class="n"&gt;E5b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ada__exceptions__exception_occurrence&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+         &lt;span class="kr"&gt;begin&lt;/span&gt;
+            &lt;span class="n"&gt;ada__exceptions__save_occurrence&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;E5b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+              &lt;span class="n"&gt;system__soft_links__get_current_excep&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;test__test_typePT__pP___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;ada__exceptions__reraise_occurrence_no_defer&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;E5b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+         &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;B6b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;at&lt;/span&gt; &lt;span class="kr"&gt;end&lt;/span&gt;
+      &lt;span class="nf"&gt;test__test_typePT__pP___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;B3b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test__test_typePT__pP&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It seems that we should keep our protected types as small as possible.
+This means (1) only using protected types when necessary and (2)
+keeping the public interface to a protected type as small as possible.&lt;/p&gt;
+&lt;p&gt;Something strange happens as soon as an entry is added to a protected
+type.  A bunch of code is added that (1) adds a queue per entry, on
+which tasks will wait to enter the protected type until the entry
+condition is true (2) and finalization code to clean up after these
+queues.&lt;/p&gt;
+&lt;p&gt;There is a notable difference between protected types with no entries,
+and those with.&lt;/p&gt;
+&lt;h1&gt;Tasks&lt;/h1&gt;
+&lt;p&gt;Tasks are not lightweight objects. The following components add up
+rather quickly:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Code to initialize a task.&lt;/li&gt;
+&lt;li&gt;Code to clean up after a task.&lt;/li&gt;
+&lt;li&gt;Handling exceptions during&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you want to look at the code generated for a task, try compiling
+the following:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+    &lt;span class="kd"&gt;task&lt;/span&gt; &lt;span class="n"&gt;test_task&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+        &lt;span class="kd"&gt;entry&lt;/span&gt; &lt;span class="nf"&gt;Start&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test_task&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;task&lt;/span&gt; &lt;span class="kr"&gt;body&lt;/span&gt; &lt;span class="n"&gt;test_task&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+    &lt;span class="kr"&gt;begin&lt;/span&gt;
+        &lt;span class="kr"&gt;accept&lt;/span&gt; &lt;span class="n"&gt;Start&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kr"&gt;loop&lt;/span&gt;
+            &lt;span class="kr"&gt;delay&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="kr"&gt;loop&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test_task&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;begin&lt;/span&gt;
+    &lt;span class="n"&gt;test_task&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The processed source is 4055 bytes and 117 lines.  You can view the
+code in the appendix.&lt;/p&gt;
+&lt;h1&gt;Subtypes and Renaming&lt;/h1&gt;
+&lt;p&gt;Subtypes and package / procedure renaming is done in a sane manner.
+Subtypes are just subtypes, nothing extra is generated, and neither is
+anything done for renaming.&lt;/p&gt;
+&lt;h1&gt;Overhead with T&amp;rsquo;Image / Value&amp;rsquo;Img and Put_Line&lt;/h1&gt;
+&lt;p&gt;So far, I&amp;rsquo;ve only found the following to happen when using T&amp;rsquo;Image for
+some type T, and Value&amp;rsquo;Image, for some variable or constant Value.&lt;/p&gt;
+&lt;p&gt;Here is the typical code (in a procedure called &amp;lsquo;test&amp;rsquo;):&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test1&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+    &lt;span class="no"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;constant&lt;/span&gt; &lt;span class="kt"&gt;integer&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;begin&lt;/span&gt;
+    &lt;span class="n"&gt;ada&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text_io&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;put_line&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t1&lt;/span&gt;&lt;span class="p"&gt;&amp;#39;&lt;/span&gt;&lt;span class="na"&gt;img&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For some reason, GNAT is turning this into the following horrific procedure:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test__test1&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+   &lt;span class="n"&gt;M5b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;system__secondary_stack__mark_id&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt;
+     &lt;span class="n"&gt;system__secondary_stack__ss_mark&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+   &lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test__test1___clean&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+   &lt;span class="kr"&gt;begin&lt;/span&gt;
+      &lt;span class="n"&gt;system__secondary_stack__ss_release&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;M5b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test__test1___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;begin&lt;/span&gt;
+   &lt;span class="no"&gt;t1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;constant&lt;/span&gt; &lt;span class="kt"&gt;integer&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="nl"&gt;B4b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;declare&lt;/span&gt;
+   &lt;span class="kr"&gt;begin&lt;/span&gt;
+      &lt;span class="n"&gt;ada&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ada__text_io&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ada__text_io__put_line&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="n"&gt;system__img_int__image_integer&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t1&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+   &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;B4b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;exception&lt;/span&gt;
+   &lt;span class="kr"&gt;when&lt;/span&gt; &lt;span class="kr"&gt;all&lt;/span&gt; &lt;span class="kr"&gt;others&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt;
+      &lt;span class="nl"&gt;B7b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;declare&lt;/span&gt;
+         &lt;span class="n"&gt;E6b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ada__exceptions__exception_occurrence&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kr"&gt;begin&lt;/span&gt;
+         &lt;span class="n"&gt;ada__exceptions__save_occurrence&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;E6b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+           &lt;span class="n"&gt;system__soft_links__get_current_excep&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+         &lt;span class="n"&gt;test__test1___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+         &lt;span class="n"&gt;ada__exceptions__reraise_occurrence_no_defer&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;E6b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;B7b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;at&lt;/span&gt; &lt;span class="kr"&gt;end&lt;/span&gt;
+   &lt;span class="nf"&gt;test__test1___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test__test1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I have looked at other places where exceptions are raised, and haven&amp;rsquo;t
+found the above.  I don&amp;rsquo;t understand the reason for why the above is
+happening.  It&amp;rsquo;s especially bad if a small function calls &amp;lsquo;Image or
+&amp;lsquo;Img.  It seems that much larger functions, or functions that make
+liberal use of T&amp;rsquo;Image or Value&amp;rsquo;Img, would be able to make up for the
+cost of all this junk by doing enough work.&lt;/p&gt;
+&lt;p&gt;Some things worth noting:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Putting a To_String (Value : T) return String function in a package
+  to convert the type to a string doesn&amp;rsquo;t seem to do the trick.  We
+  still end up with all this exception junk, and the secondary stack
+  the caller.&lt;/li&gt;
+&lt;li&gt;Putting an entire Put (Value : T) in another package does seem to
+  work.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Each block&lt;/em&gt; that has a T&amp;rsquo;Img seems to get all the junk.  This is
+  especially bad if there are many small functions or small blocks
+  that call the &amp;lsquo;Img.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Each for loop&lt;/em&gt; is equivalent to a block, in the sense that a begin
+  and end is generated for each for loop and all this junk is put in
+  that block.  Many places have an outside for loop that has an inner
+  block, that again has a for loop.  This adds up to at least three
+  blocks that have all this junk associated with them.  The inner
+  blocks are allocated upon each iteration of the loop.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Appendix&lt;/h1&gt;
+&lt;p&gt;Code generated for the dummy task.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;with&lt;/span&gt; &lt;span class="nn"&gt;system.system__parameters&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;with&lt;/span&gt; &lt;span class="nn"&gt;system.system__tasking&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;with&lt;/span&gt; &lt;span class="nn"&gt;system.system__task_info&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;with&lt;/span&gt; &lt;span class="nn"&gt;system.system__tasking.system__tasking__stages&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;with&lt;/span&gt; &lt;span class="nn"&gt;system&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;with&lt;/span&gt; &lt;span class="nn"&gt;system.system__soft_links&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;with&lt;/span&gt; &lt;span class="nn"&gt;system.system__tasking.system__tasking__rendezvous&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;with&lt;/span&gt; &lt;span class="nn"&gt;ada.ada__calendar.ada__calendar__delays&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;with&lt;/span&gt; &lt;span class="nn"&gt;ada.ada__exceptions&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+
+   &lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test___clean&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+   &lt;span class="kr"&gt;begin&lt;/span&gt;
+      &lt;span class="n"&gt;system__soft_links__abort_defer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="n"&gt;system__soft_links__complete_master&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="n"&gt;system__soft_links__abort_undefer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;begin&lt;/span&gt;
+   &lt;span class="n"&gt;system__soft_links__enter_master&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;chain&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;aliased&lt;/span&gt; &lt;span class="n"&gt;system__tasking__activation_chain&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="n"&gt;system__tasking___init_proc&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+   &lt;span class="kd"&gt;task&lt;/span&gt; &lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;test__test_taskTK&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+      &lt;span class="kd"&gt;entry&lt;/span&gt; &lt;span class="nf"&gt;start&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test__test_taskTK&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="n"&gt;test_taskTKE&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;aliased&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="n"&gt;test_taskTKZ&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;system__parameters__size_type&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt;
+     &lt;span class="n"&gt;system__parameters__unspecified_size&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;test__test_taskTKV&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt; &lt;span class="kr"&gt;limited&lt;/span&gt; &lt;span class="kr"&gt;record&lt;/span&gt;
+      &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="kd"&gt;task&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;system__tasking__task_id&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;end record&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test__test_taskTKB&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;_task&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;access&lt;/span&gt; &lt;span class="nv"&gt;test__test_taskTKV&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+   &lt;span class="n"&gt;freeze&lt;/span&gt; &lt;span class="n"&gt;test__test_taskTKV&lt;/span&gt; &lt;span class="err"&gt;[&lt;/span&gt;
+      &lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test___init_proc&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;_init&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;out&lt;/span&gt; &lt;span class="nv"&gt;test__test_taskTKV&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="nv"&gt;_master&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;system__tasking__master_id&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nv"&gt;_chain&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;out&lt;/span&gt;
+        &lt;span class="nv"&gt;system__tasking__activation_chain&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nv"&gt;_task_id&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;in&lt;/span&gt;
+        &lt;span class="nv"&gt;system__task_info__task_image_type&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+      &lt;span class="kr"&gt;begin&lt;/span&gt;
+         &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;init&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="kd"&gt;task&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt; &lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+         &lt;span class="n"&gt;system__tasking__stages__create_task&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+           &lt;span class="n"&gt;system__tasking__unspecified_priority&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_taskTKZ&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+           &lt;span class="n"&gt;system__task_info__unspecified_task_info&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+           &lt;span class="n"&gt;system__tasking__task_procedure_access&lt;/span&gt;&lt;span class="err"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test__test_taskTKB&lt;/span&gt;&lt;span class="p"&gt;&amp;#39;&lt;/span&gt;
+           &lt;span class="kt"&gt;address&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;init&lt;/span&gt;&lt;span class="p"&gt;&amp;#39;&lt;/span&gt;&lt;span class="na"&gt;address&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_taskTKE&lt;/span&gt;&lt;span class="p"&gt;&amp;#39;&lt;/span&gt;&lt;span class="na"&gt;unchecked_access&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+           &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="kd"&gt;task&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;init&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="kd"&gt;task&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+         &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test___init_proc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="err"&gt;]&lt;/span&gt;
+   &lt;span class="no"&gt;_master&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;constant&lt;/span&gt; &lt;span class="n"&gt;system__tasking__master_id&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt;
+     &lt;span class="n"&gt;system__soft_links__current_master&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="n"&gt;test_task&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;test__test_taskTK&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="n"&gt;test_taskI&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;system__task_info__task_image_type&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt; &lt;span class="kr"&gt;new&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;&amp;#39;&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;test_task&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="n"&gt;test___init_proc&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test__test_taskTKV&lt;/span&gt;&lt;span class="err"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test_task&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+     &lt;span class="n"&gt;test_taskI&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+   &lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test__test_taskTKB&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;_task&lt;/span&gt; &lt;span class="p"&gt;: &lt;/span&gt;&lt;span class="nv"&gt;access&lt;/span&gt; &lt;span class="nv"&gt;test__test_taskTKV&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+
+      &lt;span class="kd"&gt;procedure&lt;/span&gt; &lt;span class="nf"&gt;test__test_taskTK___clean&lt;/span&gt; &lt;span class="kr"&gt;is&lt;/span&gt;
+      &lt;span class="kr"&gt;begin&lt;/span&gt;
+         &lt;span class="n"&gt;system__soft_links__abort_defer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+         &lt;span class="n"&gt;system__tasking__stages__complete_task&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+         &lt;span class="n"&gt;system__soft_links__abort_undefer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+         &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test__test_taskTK___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;begin&lt;/span&gt;
+      &lt;span class="n"&gt;system__soft_links__abort_undefer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="n"&gt;L_1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;label&lt;/span&gt;
+      &lt;span class="n"&gt;system__tasking__stages__complete_activation&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="n"&gt;system__tasking__rendezvous__accept_trivial&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="nl"&gt;L_1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;loop&lt;/span&gt;
+         &lt;span class="n"&gt;ada__calendar__delays__delay_for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;100000000.0&lt;/span&gt;&lt;span class="n"&gt;E&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="kr"&gt;loop&lt;/span&gt; &lt;span class="nf"&gt;L_1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;exception&lt;/span&gt;
+      &lt;span class="kr"&gt;when&lt;/span&gt; &lt;span class="kr"&gt;all&lt;/span&gt; &lt;span class="kr"&gt;others&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt;
+         &lt;span class="nl"&gt;B7b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;declare&lt;/span&gt;
+            &lt;span class="n"&gt;E6b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ada__exceptions__exception_occurrence&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+         &lt;span class="kr"&gt;begin&lt;/span&gt;
+            &lt;span class="n"&gt;ada__exceptions__save_occurrence&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;E6b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+              &lt;span class="n"&gt;system__soft_links__get_current_excep&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;test__test_taskTK___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;ada__exceptions__reraise_occurrence_no_defer&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;E6b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+         &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;B7b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+         &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;at&lt;/span&gt; &lt;span class="kr"&gt;end&lt;/span&gt;
+      &lt;span class="nf"&gt;test__test_taskTK___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test__test_taskTKB&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+   &lt;span class="n"&gt;test_taskTKE&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="n"&gt;system__tasking__stages__activate_tasks&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;&amp;#39;&lt;/span&gt;&lt;span class="na"&gt;unchecked_access&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+   &lt;span class="nl"&gt;B9b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;declare&lt;/span&gt;
+      &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;system__tasking__task_entry_index&lt;/span&gt; &lt;span class="p"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;begin&lt;/span&gt;
+      &lt;span class="n"&gt;system__tasking__rendezvous__call_simple&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test__test_taskTKV&lt;/span&gt;&lt;span class="err"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="n"&gt;test_task&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="kd"&gt;task&lt;/span&gt;&lt;span class="mi"&gt;_&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;system__null_address&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+   &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;B9b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;exception&lt;/span&gt;
+   &lt;span class="kr"&gt;when&lt;/span&gt; &lt;span class="kr"&gt;all&lt;/span&gt; &lt;span class="kr"&gt;others&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt;
+      &lt;span class="nl"&gt;B12b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kr"&gt;declare&lt;/span&gt;
+         &lt;span class="n"&gt;E11b&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ada__exceptions__exception_occurrence&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kr"&gt;begin&lt;/span&gt;
+         &lt;span class="n"&gt;ada__exceptions__save_occurrence&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;E11b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+           &lt;span class="n"&gt;system__soft_links__get_current_excep&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;all&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+         &lt;span class="n"&gt;test___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+         &lt;span class="n"&gt;ada__exceptions__reraise_occurrence_no_defer&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;E11b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;B12b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;at&lt;/span&gt; &lt;span class="kr"&gt;end&lt;/span&gt;
+   &lt;span class="nf"&gt;test___clean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;end&lt;/span&gt; &lt;span class="nf"&gt;test&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="programming"></category></entry></feed>

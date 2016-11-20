@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Ali's Posts - networking</title>
+        <title>Ali's Posts - encryption</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css" />
@@ -32,7 +32,7 @@
 
             <div class="post heading">
                 <div class="heading-prefix">Tagged in </div>
-                <h3>networking</h3>
+                <h3>encryption</h3>
             </div>
 
 <div class="post">
@@ -43,17 +43,24 @@
     <a href="../category/misc.html" class="category">misc</a><br />
 
     <a class="author" href="../author/ali-imran.html">Ali Imran</a>
-    &mdash; <abbr title="2006-01-24T00:00:00-05:00">Tue 24 January 2006</abbr>
+    &mdash; <abbr title="2008-09-16T00:00:00-04:00">Tue 16 September 2008</abbr>
 </div>    </div>
-    <h2><a href="../gigabit-ethernet-protocol.html" rel="bookmark" title="Permalink to Gigabit Ethernet Protocol">Gigabit Ethernet Protocol</a></h2>
+    <h2><a href="../disk-encryption-overview.html" rel="bookmark" title="Permalink to Disk Encryption Overview">Disk Encryption Overview</a></h2>
     <div class="post-content">
         <h1>Introduction</h1>
-<p>This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.</p>
-<ul>
-<li>Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data ...</li></ul>
+<p>This document describes disk encryption implemented using a combination of software and FPGA.</p>
+<div class="codehilite"><pre><span></span>--Data--&gt;FPGA--&gt;Disks
+           |
+    Microcontroller
+</pre></div>
+
+
+<p>The data was encrypted using AES, in counter mode, with flexible key width.</p>
+<p>For various reasons, we did not use an <a href="https://en.wikipedia.org/wiki/Authenticated_encryption">authenticated encryption</a> mode.</p>
+<p>A FPGA was responsible for encryption, to keep ...</p>
     </div>
     <div class="post-footer">
-        <a href="../gigabit-ethernet-protocol.html">Read more</a>
+        <a href="../disk-encryption-overview.html">Read more</a>
     </div>
 </div>
 

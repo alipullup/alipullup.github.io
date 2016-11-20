@@ -42,9 +42,14 @@
         <div class="pure-u-1 article-info">
            <div class="col">
 
-               <h1><a href="../gigabit-ethernet-protocol.html">Gigabit Ethernet Protocol</a></h1>
+               <h1><a href="../my-experience-with-micro-services.html">My experience with micro-services</a></h1>
 
-               <p>Overview of a UDP based data transfer protocol</p>
+               <h1>Overview</h1>
+<p>I wrote the following after my experience in architecting a system around <a href="https://en.wikipedia.org/wiki/Microservices">microservices</a>.</p>
+<p>The implementation did not go as smoothly as expected, and I wanted to reflect on what went wrong.</p>
+<p>To channel Jamie Z:</p>
+<blockquote>
+<p>Some people, when faced with a problem think &ldquo;I know, I&rsquo;ll use microservices ...</p></blockquote>
 
                <div class="post-meta pure-g">
                    <div class="pure-u">
@@ -52,7 +57,7 @@
                    </div>
                    <div class="pure-u-3-4 meta-data">
                        <a href="../author/ali-imran.html" class="category">Ali Imran</a><br />
-                       <abbr title="2006-01-24T00:00:00-05:00">Tue 24 January 2006</abbr>
+                       <abbr title="2016-09-16T00:00:00-04:00">Fri 16 September 2016</abbr>
                    </div>
                </div>
 
@@ -61,6 +66,87 @@
         </div>
 
     </div>
+    <div class="pure-g article-row">
+
+    <div class="pure-u-1 pure-u-sm-1-2 article-info">
+        <div class="col">
+
+            <h2><a href="../disk-encryption-overview.html">Disk Encryption Overview</a></h2>
+            <h1>Introduction</h1>
+<p>This document describes disk encryption implemented using a combination of software and FPGA.</p>
+<div class="codehilite"><pre><span></span>--Data--&gt;FPGA--&gt;Disks
+           |
+    Microcontroller
+</pre></div>
+
+
+<p>The data was encrypted using AES, in counter mode, with flexible key width.</p>
+<p>For various reasons, we did not use an <a href="https://en.wikipedia.org/wiki/Authenticated_encryption">authenticated encryption</a> mode.</p>
+<p>A FPGA was responsible for encryption, to keep ...</p>
+
+            <div class="post-meta pure-g">
+                <div class="pure-u">
+                    <img src="//github.com/alipullup.png?size=120" class="post-avatar" alt="Go to the profile of Ali Imran">
+                </div>
+                <div class="pure-u-3-4 meta-data">
+                    <a href="../author/ali-imran.html" class="category">Ali Imran</a><br />
+                    <abbr title="2008-09-16T00:00:00-04:00">Tue 16 September 2008</abbr>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="pure-u-1 pure-u-sm-1-2 article-info">
+        <div class="col">
+
+            <h2><a href="../gigabit-ethernet-protocol.html">Gigabit Ethernet Protocol</a></h2>
+            <h1>Introduction</h1>
+<p>This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.</p>
+<ul>
+<li>Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data ...</li></ul>
+
+            <div class="post-meta pure-g">
+                <div class="pure-u">
+                    <img src="//github.com/alipullup.png?size=120" class="post-avatar" alt="Go to the profile of Ali Imran">
+                </div>
+                <div class="pure-u-3-4 meta-data">
+                    <a href="../author/ali-imran.html" class="category">Ali Imran</a><br />
+                    <abbr title="2006-01-24T00:00:00-05:00">Tue 24 January 2006</abbr>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+    <div class="pure-g article-row">
+
+
+    <div class="pure-u-1 pure-u-lg-1-3 article-info">
+        <div class="col">
+
+            <h2><a href="../under-the-hood-of-ada.html">Under the Hood of Ada</a></h2>
+            <h1>Introduction</h1>
+<p>The following is an old document I wrote when debugging the GCC Ada front-end for MIPS. Our platform was not officially supported and I was tasked with finding and fixing various issued related to exceptions, and tasking.</p>
+<hr />
+<p>I&rsquo;ve used that <code>-gnatG</code> switch to look at the processed source ...</p>
+
+            <div class="post-meta pure-g">
+                <div class="pure-u">
+                    <img src="//github.com/alipullup.png?size=120" class="post-avatar" alt="Go to the profile of Ali Imran">
+                </div>
+                <div class="pure-u-3-4 meta-data">
+                    <a href="../author/ali-imran.html" class="category">Ali Imran</a><br />
+                    <abbr title="2005-04-01T00:00:00-05:00">Fri 01 April 2005</abbr>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
 
     </div>
 
