@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Gigabit Ethernet Protocol</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="./theme/css/main.css" />
+	<link rel="stylesheet" href="./css/autumn.css" />
+        <link href="https://alipullup.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Ali's Posts Full Atom Feed" />
+        <link href="https://alipullup.github.io/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="Ali's Posts Categories Atom Feed" />
+</head>
+<body>
+
+    <div class="navigation pure-menu pure-menu-horizontal">
+        <a href="./" class="pure-menu-heading  pure-menu-link">Ali's Posts</a>
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"></li>
+            <li class="pure-menu-item"><a href="/archives.html" class="pure-menu-link">Archives</a></li>
+            <li class="pure-menu-item"><a href="/categories.html" class="pure-menu-link">Categories</a></li>
+            <li class="pure-menu-item"><a href="/tags.html" class="pure-menu-link">Tags</a></li>
+
+            <li class="pure-menu-item"><a href="./pages/about-me.html" class="pure-menu-link">About me</a></li>
+        </ul>
+    </div>
+
+
+<div class="page-container">
+    <div class="entry-content">
+        <div class="post-meta pure-g">
+<div class="pure-u-3-4 meta-data">
+    <a href="./category/misc.html" class="category">misc</a><br />
+
+    <a class="author" href="./author/ali-imran.html">Ali Imran</a>
+    &mdash; <abbr title="2006-01-24T00:00:00-05:00">Tue 24 January 2006</abbr>
+</div>        </div>
+    </div>
+
+    <div class="article-header-container">
+        <div class="background-image-container">
+
+            <div class="background-image-small">
+                <div class="title-container">
+                    <h1>Gigabit Ethernet Protocol</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="entry-content">
+        <h1>Introduction</h1>
+<p>This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.</p>
+<ul>
+<li>Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data packet, wait the IPG amount, then send the next packet.</li>
+<li>Round-trip time (RTT) was determined using a timestamp embedded int he packets.</li>
+<li>Loss was detected using sequence numbers, and managed using NAK packets.</li>
+</ul>
+<p>Packets arriving to the Xilinx FPGA are diverted to a control processor for handling,. We are not using a soft microprocessor in the FPGA. The FPGA is responsible for interfacing with the data store and sending data packets to the client.</p>
+<div class="codehilite"><pre><span></span>--Message--&gt; FPGA &lt;---&gt; Microprocessor
+              |
+           Data Store
+</pre></div>
+
+
+<p>We faced various challenged, but broadly we had to worry about:</p>
+<ol>
+<li>Ensuring the control process had enough of a TCP/IP implementation to function on a company&rsquo;s LAN.</li>
+<li>Making sure the control process could respond fast enough to client requests.</li>
+<li>Coding up the portable C client to run in user-space, while responding quickly to changing network conditions.</li>
+</ol>
+<p>Of the above, (3) was the most difficult. Each client&rsquo;s network is slightly different, and there are various things we have to manage:</p>
+<ol>
+<li>Unpredictable disk I/O.  We have to know how much data is queued up by the operating system, by the driver, and in the disk queues.</li>
+<li>Unpredictable process scheduling. We decided to create a user-space client (not running as a kernel driver). In hindsight, it would&rsquo;ve been better to invest the resources in creating some sort of driver. As it stands, the operating system may decide to run something else for 10 milliseconds.</li>
+<li>Unpredictable network conditions. We ended up suggesting the use of <a href="https://en.wikipedia.org/wiki/Ethernet_flow_control">hardware-based flow control</a> to deal with various sources of packet loss.</li>
+</ol>
+<p>Overall, the most difficult customer questions were never &ldquo;it doesn&rsquo;t work&rdquo;, they were always &ldquo;why is it sometimes slow?&rdquo;. </p>
+<p>To answer the &ldquo;why is it slow&rdquo; question, we ended up:</p>
+<ul>
+<li>Adding tunable logging to the portable C client</li>
+<li>Adding a tunable set of counters to the portable C client</li>
+<li>Noticing &ldquo;anomalies&rdquo; in the client and logging them (e.g. sudden jump in RTT or loss)</li>
+<li>Creating various &ldquo;dry run&rdquo; and &ldquo;simulated data&rdquo; modes to test individual pieces of the client:<ul>
+<li>A mode to benchmark and test the disk bandwidth.  Some times clients were running on a 5 year old laptop connected to a USB drive, when we recommended the latest blade server.</li>
+<li>A mode to benchmark and test the network bandwidth. Some cheap switches are terrible, and do bad things to packets.</li>
+</ul>
+</li>
+</ul>
+<h1>Message Format</h1>
+<p>There are various messages: some go from the FPGA to the C client, others go from the C client to the FPGA. All messages share a common header.</p>
+<h2>General Header</h2>
+<p>Format of the general header:</p>
+<table width="720">
+<thead>
+<tr>
+<td width="175">
+<p>Field</p>
+</td>
+<td width="81">
+<p>Length (bytes)</p>
+</td>
+<td width="464">
+<p>Description</p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="175">
+<p>Version</p>
+</td>
+<td width="81">
+<p>1</p>
+</td>
+<td width="464">
+<p>Identifies a protocol version. The first version of the protocol will be 0.</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Type</p>
+</td>
+<td width="81">
+<p>1</p>
+</td>
+<td width="464">
+<p>Type of the message.&nbsp; Currently we have the following types of messages defined:</p>
+<p>DATA(0) &ndash; This message contains data.</p>
+<p>ACK(1) &ndash; This is an acknowledgment message.</p>
+<p>NAK(2) &ndash; This is a negative acknowledgment message.<br /> OPEN(3) &ndash; This is an open message.</p>
+<p>CLOSE(4) &ndash; This is a close message.</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Reserved</p>
+</td>
+<td width="81">
+<p>2</p>
+</td>
+<td width="464">
+<p>Reserved bytes for future use.&nbsp; Should be set to zero (0) when transmitted.</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>&nbsp;</p>
+</td>
+<td width="81">
+<p>&nbsp;</p>
+</td>
+<td width="464">
+<p>The rest of the message depends on the <em>Type</em> field.</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Data Message</h2>
+<p>The DATA message is sent by the <strong>server to the client</strong>.  It contains
+a single block of data.</p>
+<table width="720">
+<thead>
+<tr>
+<td colspan="3" width="720">
+<p>DATA Message Body</p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="175">
+<p>Field</p>
+</td>
+<td width="114">
+<p>Length (bytes)</p>
+</td>
+<td width="431">
+<p>Description</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Estimated RTT (RTT)</p>
+</td>
+<td width="114">
+<p>4</p>
+</td>
+<td width="431">
+<p>The current estimated RTT in microseconds.</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Block Number (BN)</p>
+</td>
+<td width="114">
+<p>2</p>
+</td>
+<td width="431">
+<p>Contains a block number.&nbsp; The data in the message belongs to this block.</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Time Stamp (TS)</p>
+</td>
+<td width="114">
+<p>4</p>
+</td>
+<td width="431">
+<p>Time stamp sent by server to client.&nbsp; This will be echoed back by the client in the ACK.</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Data (D)</p>
+</td>
+<td width="114">
+<p>Block_Size</p>
+</td>
+<td width="431">
+<p>Data for the block (BN). Note that this is a protocol constant.</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<h2>ACK Message</h2>
+<p>The ACK message is sent by the <strong>client to the server</strong>.  It tells the
+server how many blocks the client is ready to receive, and what blocks
+the client has received thus far.</p>
+<table width="720">
+<thead>
+<tr>
+<td colspan="3" width="720">
+<p>ACK &nbsp;Message Body</p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="175">
+<p>Field</p>
+</td>
+<td width="81">
+<p>Length (bytes)</p>
+</td>
+<td width="464">
+<p>Description</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Last In-order Block Received (LBR)</p>
+</td>
+<td width="81">
+<p>2</p>
+</td>
+<td width="464">
+<p>This identifies the last in-order block received. The server assumes that every block coming before this has been received by the client.</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Time Stamp (TS)</p>
+</td>
+<td width="81">
+<p>4</p>
+</td>
+<td width="464">
+<p>Time stamp of the DATA packet this ACK references.</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Window Size (WS)</p>
+</td>
+<td width="81">
+<p>2</p>
+</td>
+<td width="464">
+<p>The number of <em>DATA</em> messages the receiver is ready to receive.</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Reserved</p>
+</td>
+<td width="81">
+<p>4</p>
+</td>
+<td width="464">
+<p>Reserved bytes for future use.&nbsp; Should be set to zero (0) when transmitted.</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<h2>NAK Message</h2>
+<p>The NAK message is sent by the <strong>client to the server</strong>.  It tells the
+server if any block has been lost.</p>
+<table width="720">
+<thead>
+<tr>
+<td colspan="3" width="720">
+<p>NAK &nbsp;Message Body</p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="175">
+<p>Field</p>
+</td>
+<td width="81">
+<p>Length (bytes)</p>
+</td>
+<td width="464">
+<p>Description</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Blocks Lost</p>
+</td>
+<td width="81">
+<p>2</p>
+</td>
+<td width="464">
+<p>How many blocks are lost.</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>Block Numbers</p>
+</td>
+<td width="81">
+<p>&nbsp;</p>
+</td>
+<td width="464">
+<p>A list of all the block numbers that are lost.&nbsp; The length of this in bytes will be 2 * Blocks Lost (each block is represented using two bytes).</p>
+</td>
+</tr>
+<tr>
+<td width="175">
+<p>End Marker</p>
+</td>
+<td width="81">
+<p>2</p>
+</td>
+<td width="464">
+<p>This special block number marks the end of the the packet and will be send to <strong>End_Block_Marker</strong>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<h1>Sender Algorithm</h1>
+<p>Omitted</p>
+<h1>Receiver Algorithm</h1>
+<p>Omitted</p>
+<h1>Protocol atop UDP</h1>
+<p>When the protocol is implemented on top of IP/UDP, the full PDU will look something like:</p>
+<table width="721">
+<thead>
+<tr>
+<td width="104">
+<p>Protocol</p>
+</td>
+<td width="325">
+<p>Field</p>
+</td>
+<td width="123">
+<p>Offset</p>
+</td>
+<td width="170">
+<p>Length (bytes)</p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>Version + IHL</p>
+</td>
+<td width="123">
+<p>0</p>
+</td>
+<td width="170">
+<p>1</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>TOS</p>
+</td>
+<td width="123">
+<p>1</p>
+</td>
+<td width="170">
+<p>1</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>Total Length</p>
+</td>
+<td width="123">
+<p>2</p>
+</td>
+<td width="170">
+<p>2</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>Identification</p>
+</td>
+<td width="123">
+<p>4</p>
+</td>
+<td width="170">
+<p>2</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>Flags + Fragment Offset</p>
+</td>
+<td width="123">
+<p>6</p>
+</td>
+<td width="170">
+<p>2</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>Time To Live</p>
+</td>
+<td width="123">
+<p>8</p>
+</td>
+<td width="170">
+<p>1</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>Protocol (17, UDP)</p>
+</td>
+<td width="123">
+<p>9</p>
+</td>
+<td width="170">
+<p>1</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>Header Checksum</p>
+</td>
+<td width="123">
+<p>10</p>
+</td>
+<td width="170">
+<p>2</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>Source IP Address</p>
+</td>
+<td width="123">
+<p>12</p>
+</td>
+<td width="170">
+<p>4</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>Dest. IP Address</p>
+</td>
+<td width="123">
+<p>16</p>
+</td>
+<td width="170">
+<p>4</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>IP</p>
+</td>
+<td width="325">
+<p>Options and Padding</p>
+</td>
+<td width="123">
+<p>20</p>
+</td>
+<td width="170">
+<p>0</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>UDP</p>
+</td>
+<td width="325">
+<p>Source Port</p>
+</td>
+<td width="123">
+<p>20</p>
+</td>
+<td width="170">
+<p>2</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>UDP</p>
+</td>
+<td width="325">
+<p>Destination Port</p>
+</td>
+<td width="123">
+<p>22</p>
+</td>
+<td width="170">
+<p>2</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>UDP</p>
+</td>
+<td width="325">
+<p>Length</p>
+</td>
+<td width="123">
+<p>24</p>
+</td>
+<td width="170">
+<p>2</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>UDP</p>
+</td>
+<td width="325">
+<p>Checksum</p>
+</td>
+<td width="123">
+<p>26</p>
+</td>
+<td width="170">
+<p>2</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>LR</p>
+</td>
+<td width="325">
+<p>Version</p>
+</td>
+<td width="123">
+<p>28</p>
+</td>
+<td width="170">
+<p>1</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>LR</p>
+</td>
+<td width="325">
+<p>Type</p>
+</td>
+<td width="123">
+<p>29</p>
+</td>
+<td width="170">
+<p>1</p>
+</td>
+</tr>
+<tr>
+<td width="104">
+<p>LR</p>
+</td>
+<td width="325">
+<p>Reserved</p>
+</td>
+<td width="123">
+<p>30</p>
+</td>
+<td width="170">
+<p>2</p>
+</td>
+</tr>
+<tr>
+<td colspan="4" width="721">
+<p><strong>Type</strong> specific data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>This adds up to a total of 32 + 10 bytes for a DATA packet, not including the data.</p>
+<h1>Protocol Performance</h1>
+<p>Assuming that we&rsquo;re carrying the protocol atop UDP, and that:</p>
+<div class="codehilite"><pre><span></span>Ethernet Overhead   ← 8 + 14 → 22 bytes 
+IP + UDP Overhead   ← 20 + 8 → 28 bytes
+Protocol Header Size    ← 4 + 2 + 4 → 10 bytes
+Protocol Data Size  ← Block_Size → 1440
+Ethernet FCS        ← 4 bytes
+Ethernet IPG        ← 12 bytes
+
+Total Overhead  ← 22 + 28 + 10 + 4 + 12 → 76 bytes
+Total Bytes     ← Total Overhead + Block_Size
+            → 76 + 1440 → 1516
+
+Bandwidth       ← 10^9 bits / second
+</pre></div>
+
+
+<p>The efficiency will be:</p>
+<div class="codehilite"><pre><span></span>(Data sent in time T) / (Total data sent in time T)
+</pre></div>
+
+
+<p>Assuming we can send</p>
+<div class="codehilite"><pre><span></span>(8 * Max_Window_Size * Block_Size)
+</pre></div>
+
+
+<p>bits in time T, the actual amount on the wire is</p>
+<div class="codehilite"><pre><span></span>(8 * Max_Window_Size * Total Bytes)
+</pre></div>
+
+
+<p>and note that we&rsquo;ll have to wait one round-time trip (RTT) to for the
+remote to ACK these bytes, which we can throw in our equation as
+(RTT * BandWidth) bits.</p>
+<div class="codehilite"><pre><span></span>(8*MaxWindowSize*BlockSize)/(8*MaxWindowSize*TotalBytes+RTT*BandWidth)
+</pre></div>
+
+
+<h2>Calculations</h2>
+<p>Here are some calculations given various window sizes, block sizes,
+and round-trip times</p>
+<p>(Omitted)</p>
+<h2>Real Time Requirements</h2>
+<p>To maintain optimal throughput, the server has to send ACK requests
+every so often.  Specifically, the server should be able to send an
+ACK packet every <code>Max_Window_Size / 2</code> packets.  Here are some numbers
+for a given window size and block size:</p>
+<table>
+<thead>
+<tr>
+<th>Window Size</th>
+<th>Block Size</th>
+<th>Time to React</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1024</td>
+<td>1440</td>
+<td>0.0059</td>
+</tr>
+<tr>
+<td>1024</td>
+<td>8920</td>
+<td>0.0365</td>
+</tr>
+<tr>
+<td>2048</td>
+<td>8920</td>
+<td>0.0731</td>
+</tr>
+</tbody>
+</table>
+<p>The time given about is for 1000 Mbit/s speeds.</p>
+<h2>IPG Calculations</h2>
+<p>Setting the inter-packet gap between packets can be used to scale the
+bandwidth.</p>
+<p>Bandwidth is the amount of data sent in some period of time.  The
+normal time taken (without any IPG) to send data is simply:</p>
+<div class="codehilite"><pre><span></span>DataSize / BandWidth
+</pre></div>
+
+
+<p>By adding an inter packet gap, the time taken increases by IPG
+seconds.  Thus, the achieved bandwidth is:</p>
+<div class="codehilite"><pre><span></span>AchievedBandWidth =  DataSize / (DataSize / BandWidth + IPG)
+</pre></div>
+
+
+<p>Solving for IPG, we get the equation:</p>
+<div class="codehilite"><pre><span></span>-DataSize(AchievedBandWidth-BandWidth)/(AchievedBandWidth*BandWidth)
+</pre></div>
+
+
+<p>Here are some calculations about required IPG values to achieve a given bandwidth:</p>
+<table>
+<thead>
+<tr>
+<th>Data Size</th>
+<th>Bandwidth</th>
+<th>Achieved</th>
+<th>IPG (us)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1500</td>
+<td>1000</td>
+<td>1000</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1500</td>
+<td>1000</td>
+<td>800</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1500</td>
+<td>1000</td>
+<td>400</td>
+<td>18</td>
+</tr>
+</tbody>
+</table>
+<h2>Packet Loss</h2>
+<p>(Omitted)</p>
+    </div>
+
+    <footer>
+        <div class="tags">
+            <a href="./tag/programming.html">programming</a>
+            <a href="./tag/networking.html">networking</a>
+            <a href="./tag/protocol.html">protocol</a>
+        </div>
+        <div class="pure-g post-footer">
+            <div class="pure-u-1 pure-u-md-1-2">
+                <div class="pure-g poster-info">
+                    <div class="pure-u">
+                        <a href="./author/ali-imran.html"><img src="//github.com/alipullup.png?size=120" alt=""></a>
+                    </div>
+                    <div class="pure-u-3-4">
+                        <h3 class="author-name"><a href="./author/ali-imran.html">Ali Imran</a></h3>
+                        <p class="author-description">
+                          Software Engineer
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+
+    <footer class="index-footer">
+
+        <a href="./" title="Ali's Posts">Ali's Posts</a>
+        <a href="/archives.html">Archives</a></li>
+        <a href="/categories.html">Categories</a></li>
+        <a href="/tags.html">Tags</a></li>
+        <a href="./pages/about-me.html">About me</a>
+
+    </footer>
+
+</body>
+</html>
