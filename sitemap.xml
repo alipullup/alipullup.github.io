@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://alipullup.github.io/</loc>
+    <lastmod>2020-11-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/posts/</loc>
+    <lastmod>2020-11-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/posts/what-i-learned-2020-11-09/</loc>
+    <lastmod>2020-11-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/posts/what-i-learned-2020-11-02/</loc>
+    <lastmod>2020-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/posts/what-i-learned-2020-10-26/</loc>
+    <lastmod>2020-10-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/posts/my-experience-with-microservices/</loc>
+    <lastmod>2016-09-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/posts/u-boot-notes/</loc>
+    <lastmod>2013-06-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/posts/disk-encryption-overview/</loc>
+    <lastmod>2008-09-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/posts/gigabit-ethernet-protocol/</loc>
+    <lastmod>2006-01-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/posts/under-the-hood-of-ada/</loc>
+    <lastmod>2005-04-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://alipullup.github.io/tags/</loc>
+  </url>
+  
+</urlset>

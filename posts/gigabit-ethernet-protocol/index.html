@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>Gigabit Ethernet Protocol - Ali&#39;s Posts</title>
+
+<meta name="keywords" content="" />
+<meta name="description" content="Introduction This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.
+ Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data packet, wait the IPG amount, then send the next packet. Round-trip time (RTT) was determined using a timestamp embedded int he packets.">
+<meta name="author" content="">
+<link rel="canonical" href="https://alipullup.github.io/posts/gigabit-ethernet-protocol/" />
+<link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
+    as="style">
+
+<link rel="manifest" href="https://alipullup.github.io/site.webmanifest">
+<link rel="icon" href="https://alipullup.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alipullup.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alipullup.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alipullup.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alipullup.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.78.1" />
+
+
+
+
+</head>
+
+<body class="single" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        .theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://alipullup.github.io/" accesskey="h">Ali&#39;s Posts</a>
+            <span class="logo-switches">
+                <span class="theme-toggle">
+                    <a id="theme-toggle" accesskey="t">
+                        <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </a>
+                </span>
+                
+            </span>
+        </div>
+        <ul class="menu" id="menu" onscroll="menu_on_scroll()"></ul>
+    </nav>
+</header>
+
+    <main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">
+      Gigabit Ethernet Protocol
+    </h1>
+    <div class="post-meta">January 24, 2006
+
+    </div>
+  </header> 
+
+  <div class="post-content">
+<h1 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h1>
+<p>This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.</p>
+<ul>
+<li>Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data packet, wait the IPG amount, then send the next packet.</li>
+<li>Round-trip time (RTT) was determined using a timestamp embedded int he packets.</li>
+<li>Loss was detected using sequence numbers, and managed using NAK packets.</li>
+</ul>
+<p>Packets arriving to the Xilinx FPGA are diverted to a control processor for handling,. We are not using a soft microprocessor in the FPGA. The FPGA is responsible for interfacing with the data store and sending data packets to the client.</p>
+<pre><code>--Message--&gt; FPGA &lt;---&gt; Microprocessor
+              |
+           Data Store
+</code></pre><p>We faced various challenged, but broadly we had to worry about:</p>
+<ol>
+<li>Ensuring the control process had enough of a TCP/IP implementation to function on a company’s LAN.</li>
+<li>Making sure the control process could respond fast enough to client requests.</li>
+<li>Coding up the portable C client to run in user-space, while responding quickly to changing network conditions.</li>
+</ol>
+<p>Of the above, (3) was the most difficult. Each client’s network is slightly different, and there are various things we have to manage:</p>
+<ol>
+<li>Unpredictable disk I/O. We have to know how much data is queued up by the operating system, by the driver, and in the disk queues.</li>
+<li>Unpredictable process scheduling. We decided to create a user-space client (not running as a kernel driver). In hindsight, it would’ve been better to invest the resources in creating some sort of driver. As it stands, the operating system may decide to run something else for 10 milliseconds.</li>
+<li>Unpredictable network conditions. We ended up suggesting the use of <a href="https://en.wikipedia.org/wiki/Ethernet_flow_control">hardware-based flow control</a> to deal with various sources of packet loss.</li>
+</ol>
+<p>Overall, the most difficult customer questions were never &ldquo;it doesn’t work&rdquo;, they were always &ldquo;why is it sometimes slow?&rdquo;.</p>
+<p>To answer the &ldquo;why is it slow&rdquo; question, we ended up:</p>
+<ul>
+<li>Adding tunable logging to the portable C client</li>
+<li>Adding a tunable set of counters to the portable C client</li>
+<li>Noticing &ldquo;anomalies&rdquo; in the client and logging them (e.g. sudden jump in RTT or loss)</li>
+<li>Creating various &ldquo;dry run&rdquo; and &ldquo;simulated data&rdquo; modes to test individual pieces of the client:
+<ul>
+<li>A mode to benchmark and test the disk bandwidth. Some times clients were running on a 5 year old laptop connected to a USB drive, when we recommended the latest blade server.</li>
+<li>A mode to benchmark and test the network bandwidth. Some cheap switches are terrible, and do bad things to packets.</li>
+</ul>
+</li>
+</ul>
+<h1 id="message-format">Message Format<a hidden class="anchor" aria-hidden="true" href="#message-format">#</a></h1>
+<p>There are various messages: some go from the FPGA to the C client, others go from the C client to the FPGA. All messages share a common header.</p>
+<h2 id="general-header">General Header<a hidden class="anchor" aria-hidden="true" href="#general-header">#</a></h2>
+<p>Format of the general header:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Length (bytes)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version</td>
+<td>1</td>
+<td>Identifies a protocol version. The first version of the protocol will be 0.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>1</td>
+<td>Type of the message (see below)</td>
+</tr>
+<tr>
+<td>Reserved</td>
+<td>2</td>
+<td>Reserved bytes for future use.  Should be set to zero (0) when transmitted.</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>The rest of the message depends on the <em>Type</em> field.</td>
+</tr>
+</tbody>
+</table>
+<p>Currently we have the following types of messages defined:</p>
+<ul>
+<li>DATA(0) - This message contains data.</li>
+<li>ACK(1) - This is an acknowledgment message.</li>
+<li>NAK(2) - This is a negative acknowledgment message.</li>
+<li>OPEN(3) - This is an open message.</li>
+<li>CLOSE(4) - This is a close message.|</li>
+</ul>
+<h2 id="data-message">Data Message<a hidden class="anchor" aria-hidden="true" href="#data-message">#</a></h2>
+<p>The DATA message is sent by the <strong>server to the client</strong>. It contains a single block of data.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Length (bytes)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Estimated RTT (RTT)</td>
+<td>4</td>
+<td>The current estimated RTT in microseconds.</td>
+</tr>
+<tr>
+<td>Block Number (BN)</td>
+<td>2</td>
+<td>Contains a block number.  The data in the message belongs to this block.</td>
+</tr>
+<tr>
+<td>Time Stamp (TS)</td>
+<td>4</td>
+<td>Time stamp sent by server to client.  This will be echoed back by the client in the ACK.</td>
+</tr>
+<tr>
+<td>Data (D)</td>
+<td>Block_Size</td>
+<td>Data for the block (BN). Note that this is a protocol constant.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ack-message">ACK Message<a hidden class="anchor" aria-hidden="true" href="#ack-message">#</a></h2>
+<p>The ACK message is sent by the <strong>client to the server</strong>. It tells the server how many blocks the client is ready to receive, and what blocks the client has received thus far.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Length (bytes)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Last In-order Block Received (LBR)</td>
+<td>2</td>
+<td>This identifies the last in-order block received. The server assumes that every block coming before this has been received by the client.</td>
+</tr>
+<tr>
+<td>Time Stamp (TS)</td>
+<td>4</td>
+<td>Time stamp of the DATA packet this ACK references.</td>
+</tr>
+<tr>
+<td>Window Size (WS)</td>
+<td>2</td>
+<td>The number of <em>DATA</em> messages the receiver is ready to receive.</td>
+</tr>
+<tr>
+<td>Reserved</td>
+<td>4</td>
+<td>Reserved bytes for future use.  Should be set to zero (0) when transmitted.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="nak-message">NAK Message<a hidden class="anchor" aria-hidden="true" href="#nak-message">#</a></h2>
+<p>The NAK message is sent by the <strong>client to the server</strong>. It tells the server if any block has been lost.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Length (bytes)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blocks Lost</td>
+<td>2</td>
+<td>How many blocks are lost.</td>
+</tr>
+<tr>
+<td>Block Numbers</td>
+<td></td>
+<td>A list of all the block numbers that are lost.  The length of this in bytes will be 2 * Blocks Lost (each block is represented using two bytes).</td>
+</tr>
+<tr>
+<td>End Marker</td>
+<td>2</td>
+<td>This special block number marks the end of the the packet and will be send to <strong>End_Block_Marker</strong>.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="sender-algorithm">Sender Algorithm<a hidden class="anchor" aria-hidden="true" href="#sender-algorithm">#</a></h1>
+<p>Omitted</p>
+<h1 id="receiver-algorithm">Receiver Algorithm<a hidden class="anchor" aria-hidden="true" href="#receiver-algorithm">#</a></h1>
+<p>Omitted</p>
+<h1 id="protocol-atop-udp">Protocol atop UDP<a hidden class="anchor" aria-hidden="true" href="#protocol-atop-udp">#</a></h1>
+<p>When the protocol is implemented on top of IP/UDP, the full PDU will look something like:</p>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Field</th>
+<th>Offset</th>
+<th>Length (bytes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IP</td>
+<td>Version + IHL</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>TOS</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>Total Length</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>Identification</td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>Flags + Fragment Offset</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>Time To Live</td>
+<td>8</td>
+<td>1</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>Protocol (17, UDP)</td>
+<td>9</td>
+<td>1</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>Header Checksum</td>
+<td>10</td>
+<td>2</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>Source IP Address</td>
+<td>12</td>
+<td>4</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>Dest. IP Address</td>
+<td>16</td>
+<td>4</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>Options and Padding</td>
+<td>20</td>
+<td>0</td>
+</tr>
+<tr>
+<td>UDP</td>
+<td>Source Port</td>
+<td>20</td>
+<td>2</td>
+</tr>
+<tr>
+<td>UDP</td>
+<td>Destination Port</td>
+<td>22</td>
+<td>2</td>
+</tr>
+<tr>
+<td>UDP</td>
+<td>Length</td>
+<td>24</td>
+<td>2</td>
+</tr>
+<tr>
+<td>UDP</td>
+<td>Checksum</td>
+<td>26</td>
+<td>2</td>
+</tr>
+<tr>
+<td>LR</td>
+<td>Version</td>
+<td>28</td>
+<td>1</td>
+</tr>
+<tr>
+<td>LR</td>
+<td>Type</td>
+<td>29</td>
+<td>1</td>
+</tr>
+<tr>
+<td>LR</td>
+<td>Reserved</td>
+<td>30</td>
+<td>2</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Type</strong> specific data.</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>This adds up to a total of 32 + 10 bytes for a DATA packet, not including the data.</p>
+<h1 id="protocol-performance">Protocol Performance<a hidden class="anchor" aria-hidden="true" href="#protocol-performance">#</a></h1>
+<p>Assuming that we’re carrying the protocol atop UDP, and that:</p>
+<pre><code>Ethernet Overhead       ← 8 + 14 → 22 bytes
+IP + UDP Overhead       ← 20 + 8 → 28 bytes
+Protocol Header Size    ← 4 + 2 + 4 → 10 bytes
+Protocol Data Size      ← Block_Size → 1440
+Ethernet FCS            ← 4 bytes
+Ethernet IPG            ← 12 bytes
+
+Total Overhead  ← 22 + 28 + 10 + 4 + 12 → 76 bytes
+Total Bytes     ← Total Overhead + Block_Size
+                → 76 + 1440 → 1516
+
+Bandwidth       ← 10^9 bits / second
+</code></pre><p>The efficiency will be:</p>
+<p><code>(Data sent in time T) / (Total data sent in time T)</code></p>
+<p>Assuming we can send</p>
+<p><code>(8 * Max_Window_Size * Block_Size)</code></p>
+<p>bits in time T, the actual amount on the wire is</p>
+<p><code>(8 * Max_Window_Size * Total Bytes)</code></p>
+<p>and note that we’ll have to wait one round-time trip (RTT) to for the remote to ACK these bytes, which we can throw in our equation as (RTT * BandWidth) bits.</p>
+<p><code>(8*MaxWindowSize*BlockSize)/(8*MaxWindowSize*TotalBytes+RTT*BandWidth)</code></p>
+<h2 id="calculations">Calculations<a hidden class="anchor" aria-hidden="true" href="#calculations">#</a></h2>
+<p>Here are some calculations given various window sizes, block sizes, and round-trip times</p>
+<p>(Omitted)</p>
+<h2 id="real-time-requirements">Real Time Requirements<a hidden class="anchor" aria-hidden="true" href="#real-time-requirements">#</a></h2>
+<p>To maintain optimal throughput, the server has to send ACK requests every so often. Specifically, the server should be able to send an ACK packet every <code>Max_Window_Size / 2</code> packets. Here are some numbers for a given window size and block size:</p>
+<table>
+<thead>
+<tr>
+<th>Window Size</th>
+<th>Block Size</th>
+<th>Time to React</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1024</td>
+<td>1440</td>
+<td>0.0059</td>
+</tr>
+<tr>
+<td>1024</td>
+<td>8920</td>
+<td>0.0365</td>
+</tr>
+<tr>
+<td>2048</td>
+<td>8920</td>
+<td>0.0731</td>
+</tr>
+</tbody>
+</table>
+<p>The time given about is for 1000 Mbit/s speeds.</p>
+<h2 id="ipg-calculations">IPG Calculations<a hidden class="anchor" aria-hidden="true" href="#ipg-calculations">#</a></h2>
+<p>Setting the inter-packet gap between packets can be used to scale the bandwidth.</p>
+<p>Bandwidth is the amount of data sent in some period of time. The normal time taken (without any IPG) to send data is simply:</p>
+<p><code>DataSize / BandWidth</code></p>
+<p>By adding an inter packet gap, the time taken increases by IPG seconds. Thus, the achieved bandwidth is:</p>
+<p><code>AchievedBandWidth =  DataSize / (DataSize / BandWidth + IPG)</code></p>
+<p>Solving for IPG, we get the equation:</p>
+<p><code>-DataSize(AchievedBandWidth-BandWidth)/(AchievedBandWidth*BandWidth)</code></p>
+<p>Here are some calculations about required IPG values to achieve a given bandwidth:</p>
+<table>
+<thead>
+<tr>
+<th>Data Size</th>
+<th>Bandwidth</th>
+<th>Achieved</th>
+<th>IPG (us)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1500</td>
+<td>1000</td>
+<td>1000</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1500</td>
+<td>1000</td>
+<td>800</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1500</td>
+<td>1000</td>
+<td>400</td>
+<td>18</td>
+</tr>
+</tbody>
+</table>
+<h2 id="packet-loss">Packet Loss<a hidden class="anchor" aria-hidden="true" href="#packet-loss">#</a></h2>
+<p>(Omitted)</p>
+
+</div>
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main><footer class="footer">
+    <span>&copy; 2020 <a href="https://alipullup.github.io/">Ali&#39;s Posts</a></span>
+    <span>&middot;</span>
+    <span>Powered by <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a></span>
+    <span>&middot;</span>
+    <span>Theme <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top" accesskey="g">
+    <button class="top-link" id="top-link" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6">
+            <path d="M12 6H0l6-6z" /></svg>
+    </button>
+</a>
+
+
+<script src="https://alipullup.github.io/assets/js/highlight.min.e7afc2928c0925d65c4732dfebe147014d91299a98e819e4b42f25c4fa68e91c.js" integrity="sha256-56/CkowJJdZcRzLf6&#43;FHAU2RKZqY6BnktC8lxPpo6Rw="></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    window.onload = function () {
+        if (localStorage.getItem("menu-scroll-position")) {
+            document.getElementById('menu').scrollLeft = localStorage.getItem("menu-scroll-position");
+        }
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            document.querySelector(`[id='${id}']`).scrollIntoView({
+                behavior: "smooth"
+            });
+        });
+    });
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+    function menu_on_scroll() {
+        localStorage.setItem("menu-scroll-position", document.getElementById('menu').scrollLeft);
+    }
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+</script>
+
+</body>
+
+</html>

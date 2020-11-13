@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Ali&#39;s Posts</title>
+    <link>https://alipullup.github.io/posts/</link>
+    <description>Recent content in Posts on Ali&#39;s Posts</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 11 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What I Learned 2020-11-09</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-11-09/</link>
+      <pubDate>Wed, 11 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-11-09/</guid>
+      <description>Left shift of uint16_t promotes it to an int, and will sign-extend it if assigning a 64-bit value, e.g. code like: uint64_t x; uint16_t y=0x8000; x=y&amp;lt;&amp;lt;16; will assign x to ffffffff80000000 TCP syn-cookies have lots of problems! Just saw a fix and Google search found various issues that have been found over time. Not clear if the syn cookie enabling is per-port or global. Qualcomm has an IP Accelerator built into some SoC.</description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2020-11-02</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-11-02/</link>
+      <pubDate>Mon, 02 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-11-02/</guid>
+      <description> Ghidra - tons of tutorials on YouTube In search of other build systems: DBMS Kbuild Linux jargon: &amp;ldquo;Reverse Christmas tree&amp;rdquo; - put longest declaration in function at top syzbot - finds so many bugs automatically! Notes on how to submit patch to Linux mailing list Linux has a self tests directory to exercise individual code paths in the kernel Example of Linux self tests: PowerPC self tests  </description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2020-10-26</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-10-26/</link>
+      <pubDate>Mon, 26 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-10-26/</guid>
+      <description>Linux facility MODULE_SOFTDEP for adding dependency between modules, even if one doesn&amp;rsquo;t use the symbol from the other Linux macros for dealing with atomic sections of code, see this API page  non_block_start() / non_block_end() might_sleep() / cant_sleep() / might_sleep_if(cond) cant_migrate()   Linux has deprecated in_irq() / in_interrupt() - see this email Use a passed in parameter instead, e.g. may_sleep Use lockdep_assert_held(lock) for checking MACSec 802.1AE uses hostapd/wpa_supplicant to do L2 security!</description>
+    </item>
+    
+    <item>
+      <title>My experience with micro-services</title>
+      <link>https://alipullup.github.io/posts/my-experience-with-microservices/</link>
+      <pubDate>Fri, 16 Sep 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/my-experience-with-microservices/</guid>
+      <description>Overview I wrote the following after my experience in architecting a system around microservices.
+The implementation did not go as smoothly as expected, and I wanted to reflect on what went wrong.
+To channel Jamie Z:
+ Some people, when faced with a problem think “I know, I’ll use microservices.” Now they have 2^N problems.
+ I think we used microservices for the wrong reasons:
+ If you’re worried about future extensibility, then use a well defined interface to a library.</description>
+    </item>
+    
+    <item>
+      <title>U-Boot Notes</title>
+      <link>https://alipullup.github.io/posts/u-boot-notes/</link>
+      <pubDate>Thu, 13 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/u-boot-notes/</guid>
+      <description>Introduction The following document contains some notes I took while debugging U-Boot board initialization for the MIPS and ARM platforms.
+On one platform we had issues with the QSPI flash. On another platform we had memory issues. Yet another platform had issues with calling certain functions before some hardware was initialized.
+ Startup The system jumps to the _start routine. This is mapped to a known address in Flash.
+The board_init_f function calls various other functions:</description>
+    </item>
+    
+    <item>
+      <title>Disk Encryption Overview</title>
+      <link>https://alipullup.github.io/posts/disk-encryption-overview/</link>
+      <pubDate>Tue, 16 Sep 2008 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/disk-encryption-overview/</guid>
+      <description>Introduction This document describes disk encryption implemented using a combination of software and FPGA.
+--Data--&amp;gt;FPGA--&amp;gt;Disks|MicrocontrollerThe data was encrypted using AES, in counter mode, with flexible key width.
+For various reasons, we did not use an authenticated encryption mode.
+A FPGA was responsible for encryption, to keep up with the high data rate. Control software running on a microcontroller was responsible for loading up the AES key schedule during bulk streaming operations.</description>
+    </item>
+    
+    <item>
+      <title>Gigabit Ethernet Protocol</title>
+      <link>https://alipullup.github.io/posts/gigabit-ethernet-protocol/</link>
+      <pubDate>Tue, 24 Jan 2006 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/gigabit-ethernet-protocol/</guid>
+      <description>Introduction This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.
+ Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data packet, wait the IPG amount, then send the next packet. Round-trip time (RTT) was determined using a timestamp embedded int he packets.</description>
+    </item>
+    
+    <item>
+      <title>Under the Hood of Ada</title>
+      <link>https://alipullup.github.io/posts/under-the-hood-of-ada/</link>
+      <pubDate>Fri, 01 Apr 2005 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/under-the-hood-of-ada/</guid>
+      <description>Introduction The following is an old document I wrote when debugging the GCC Ada front-end for MIPS. Our platform was not officially supported and I was tasked with finding and fixing various issued related to exceptions, and tasking.
+I&amp;rsquo;ve used that -gnatG switch to look at the processed source produced by GNAT and done some analysis. What follows is a summary and highlights from that analysis.
+Exceptions The exception
+Blocking_Error : exception; This is turned into</description>
+    </item>
+    
+  </channel>
+</rss>

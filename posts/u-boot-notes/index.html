@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>U-Boot Notes - Ali&#39;s Posts</title>
+
+<meta name="keywords" content="" />
+<meta name="description" content="Introduction The following document contains some notes I took while debugging U-Boot board initialization for the MIPS and ARM platforms.
+On one platform we had issues with the QSPI flash. On another platform we had memory issues. Yet another platform had issues with calling certain functions before some hardware was initialized.
+ Startup The system jumps to the _start routine. This is mapped to a known address in Flash.
+The board_init_f function calls various other functions:">
+<meta name="author" content="">
+<link rel="canonical" href="https://alipullup.github.io/posts/u-boot-notes/" />
+<link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
+    as="style">
+
+<link rel="manifest" href="https://alipullup.github.io/site.webmanifest">
+<link rel="icon" href="https://alipullup.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alipullup.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alipullup.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alipullup.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alipullup.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.78.1" />
+
+
+
+
+</head>
+
+<body class="single" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        .theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://alipullup.github.io/" accesskey="h">Ali&#39;s Posts</a>
+            <span class="logo-switches">
+                <span class="theme-toggle">
+                    <a id="theme-toggle" accesskey="t">
+                        <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </a>
+                </span>
+                
+            </span>
+        </div>
+        <ul class="menu" id="menu" onscroll="menu_on_scroll()"></ul>
+    </nav>
+</header>
+
+    <main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">
+      U-Boot Notes
+    </h1>
+    <div class="post-meta">June 13, 2013
+
+    </div>
+  </header> 
+
+  <div class="post-content">
+<h1 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h1>
+<p>The following document contains some notes I took while debugging U-Boot board initialization for the MIPS and ARM platforms.</p>
+<p>On one platform we had issues with the QSPI flash. On another platform we had memory issues. Yet another platform had issues with calling certain functions before some hardware was initialized.</p>
+<hr>
+<h1 id="startup">Startup<a hidden class="anchor" aria-hidden="true" href="#startup">#</a></h1>
+<p>The system jumps to the <code>_start</code> routine. This is mapped to a known address in Flash.</p>
+<p><img src="/image/uboot-startup-startS.png" alt="U-Boot Startup"></p>
+<p>The <code>board_init_f</code> function calls various other functions:</p>
+<p><img src="/image/uboot-board_init_f.png" alt="Function board_init_f"></p>
+<h1 id="dts-file-overview">DTS File overview<a hidden class="anchor" aria-hidden="true" href="#dts-file-overview">#</a></h1>
+<p>A Device Tree Source (dts) file is compiled by the Device Tree Compiler (dtc) into a Device Tree Blob (dtb).</p>
+<p>The dts file describes resources found on the chip, including:</p>
+<ul>
+<li>Chip selects, and timings</li>
+<li>I2C devices</li>
+<li>etc.</li>
+</ul>
+<p><img src="/image/u-boot-dts--overview.png" alt="U-Boot DTS Overview"></p>
+<h2 id="location">Location<a hidden class="anchor" aria-hidden="true" href="#location">#</a></h2>
+<p>The <code>.dts</code> file is found in</p>
+<p>(REMOVED)</p>
+<h2 id="format">Format<a hidden class="anchor" aria-hidden="true" href="#format">#</a></h2>
+<p>The dts file consists of nodes, with properties and children.</p>
+<ul>
+<li>Text strings (null terminated) are represented with double quotes:
+<ul>
+<li><code>string-property = &quot;a string&quot;</code></li>
+</ul>
+</li>
+<li>&lsquo;Cells&rsquo; are 32 bit unsigned integers delimited by angle brackets:
+<ul>
+<li><code>cell-property = &lt;0xbeef 123 0xabcd1234&gt;</code></li>
+</ul>
+</li>
+<li>Binary data is delimited with square brackets:
+<ul>
+<li><code>binary-property = [0x01 0x23 0x45 0x67]</code></li>
+</ul>
+</li>
+<li>Data of differing representations can be concatenated together using a comma:
+<ul>
+<li><code>mixed-property = &quot;a string&quot;, [0x01 0x23 0x45 0x67], &lt;0x12345678&gt;</code></li>
+</ul>
+</li>
+<li>Commas are also used to create lists of strings:
+<ul>
+<li><code>string-list = &quot;red fish&quot;, &quot;blue fish&quot;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="conventions">Conventions<a hidden class="anchor" aria-hidden="true" href="#conventions">#</a></h2>
+<ul>
+<li>Node may have an <em>address</em>: <code>name@0 { ... }</code></li>
+<li>Names can be up to 31 characters in length</li>
+<li>Siblings must use different names, or different addresses:
+<ul>
+<li><code>flash0{} flash1{}</code></li>
+<li><code>flash@0{} flash@1{}</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="the-compatible-property">The <code>compatible</code> property<a hidden class="anchor" aria-hidden="true" href="#the-compatible-property">#</a></h2>
+<p>The <code>compatible</code> property is a list of strings:</p>
+<ol>
+<li>The first string specifies the exact device</li>
+<li>The following strings represent other devices that the device is <em>compatible</em> with</li>
+</ol>
+<h2 id="addressing-reg-address-cells-size-cells">Addressing (<code>reg</code>, <code>#address-cells</code>, <code>#size-cells</code>)<a hidden class="anchor" aria-hidden="true" href="#addressing-reg-address-cells-size-cells">#</a></h2>
+<p>Each addressable device gets a =reg= which is a list in the form</p>
+<p><code>reg = &lt;addr1 len1 [addr2 len2] ...&gt;</code></p>
+<p>The special variables <code>#address-cells</code> and <code>#size-cells</code> in the parent node are used to state how many cells are in each field.</p>
+<h2 id="resources">Resources<a hidden class="anchor" aria-hidden="true" href="#resources">#</a></h2>
+<ul>
+<li><a href="http://www.devicetree.org/Device_Tree_Usage">Device Tree Usage</a></li>
+</ul>
+
+</div>
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main><footer class="footer">
+    <span>&copy; 2020 <a href="https://alipullup.github.io/">Ali&#39;s Posts</a></span>
+    <span>&middot;</span>
+    <span>Powered by <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a></span>
+    <span>&middot;</span>
+    <span>Theme <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top" accesskey="g">
+    <button class="top-link" id="top-link" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6">
+            <path d="M12 6H0l6-6z" /></svg>
+    </button>
+</a>
+
+
+<script src="https://alipullup.github.io/assets/js/highlight.min.e7afc2928c0925d65c4732dfebe147014d91299a98e819e4b42f25c4fa68e91c.js" integrity="sha256-56/CkowJJdZcRzLf6&#43;FHAU2RKZqY6BnktC8lxPpo6Rw="></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    window.onload = function () {
+        if (localStorage.getItem("menu-scroll-position")) {
+            document.getElementById('menu').scrollLeft = localStorage.getItem("menu-scroll-position");
+        }
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            document.querySelector(`[id='${id}']`).scrollIntoView({
+                behavior: "smooth"
+            });
+        });
+    });
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+    function menu_on_scroll() {
+        localStorage.setItem("menu-scroll-position", document.getElementById('menu').scrollLeft);
+    }
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+</script>
+
+</body>
+
+</html>

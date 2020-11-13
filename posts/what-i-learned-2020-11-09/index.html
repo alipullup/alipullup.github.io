@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>What I Learned 2020-11-09 - Ali&#39;s Posts</title>
+
+<meta name="keywords" content="" />
+<meta name="description" content="Left shift of uint16_t promotes it to an int, and will sign-extend it if assigning a 64-bit value, e.g. code like: uint64_t x; uint16_t y=0x8000; x=y&lt;&lt;16; will assign x to ffffffff80000000 TCP syn-cookies have lots of problems! Just saw a fix and Google search found various issues that have been found over time. Not clear if the syn cookie enabling is per-port or global. Qualcomm has an IP Accelerator built into some SoC.">
+<meta name="author" content="">
+<link rel="canonical" href="https://alipullup.github.io/posts/what-i-learned-2020-11-09/" />
+<link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
+    as="style">
+
+<link rel="manifest" href="https://alipullup.github.io/site.webmanifest">
+<link rel="icon" href="https://alipullup.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alipullup.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alipullup.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alipullup.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alipullup.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.78.1" />
+
+
+
+
+</head>
+
+<body class="single" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        .theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://alipullup.github.io/" accesskey="h">Ali&#39;s Posts</a>
+            <span class="logo-switches">
+                <span class="theme-toggle">
+                    <a id="theme-toggle" accesskey="t">
+                        <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </a>
+                </span>
+                
+            </span>
+        </div>
+        <ul class="menu" id="menu" onscroll="menu_on_scroll()"></ul>
+    </nav>
+</header>
+
+    <main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">
+      What I Learned 2020-11-09
+    </h1>
+    <div class="post-meta">November 11, 2020
+
+    </div>
+  </header> 
+
+  <div class="post-content">
+<ul>
+<li>Left shift of uint16_t promotes it to an int, and will sign-extend it if assigning a 64-bit value, e.g. code like:
+<code>uint64_t x; uint16_t y=0x8000; x=y&lt;&lt;16;</code>
+will assign <code>x</code> to <code>ffffffff80000000</code></li>
+<li>TCP syn-cookies have lots of problems! Just
+<a href="https://lore.kernel.org/netdev/CANn89iL2ADYh9n95ZMntGZ8vFmU2OzVJ0YKTpq8J+3A1Mh1Asw@mail.gmail.com/T/#t">saw a fix</a>
+and Google search found
+<a href="https://access.redhat.com/solutions/30453">various issues</a>
+that have been
+<a href="https://blog.cloudflare.com/syn-packet-handling-in-the-wild/">found</a> over time.
+Not clear if the syn cookie enabling is per-port or global.</li>
+<li>Qualcomm has an <a href="https://lwn.net/Articles/770924/">IP Accelerator</a> built into some SoC. It seems like it has hardware perform NAT, routing, firewall.</li>
+<li>Intel <a href="https://doc.dpdk.org/guides/platform/dpaa.html">DPDK has support for LS1046</a> -
+has support for cryptographic and hardware acceleration</li>
+<li><a href="https://en.wikipedia.org/wiki/Parallel_Redundancy_Protocol">PRP</a> is a protocol for redundancy - there exist a <a href="https://support.industry.siemens.com/cs/pd/1093505?pdti=pi&amp;lc=en-ao&amp;dl=en">commercial implementation</a> for Windows</li>
+<li>Windows has a tunnel driver called <a href="https://www.wintun.net/">Wintun</a> (GPL v2)- originally designed for WireGuard - perhaps it could be used for any custom protocol?</li>
+<li>Rant by Linus <a href="https://yarchive.net/comp/linux/zero-copy.html">against zero-copy</a>: the effort needed to lock pages is high, think of sending data from kernel buffers, instead of zero-copy from user buffers. Or, sending read-only data (e.g. file from disk) directly through kernel using &ldquo;sendfile()&rdquo;.</li>
+<li>Linux has <a href="https://github.com/torvalds/linux/blob/master/include/linux/ptr_ring.h">ptr_ring</a> header file for a circular ring of buffers. Interesting observations:
+<ul>
+<li>Each function for adding/removing data has a variant for IRQ/bottom-half/other</li>
+<li>The index (&ldquo;head&rdquo; and &ldquo;tail&rdquo;) is cache-aligned (on SMP systems only)</li>
+<li>The &ldquo;consume&rdquo; function has a &ldquo;batch&rdquo; variant (to amortize the spinlock overhead I assume)</li>
+</ul>
+</li>
+<li><a href="https://en.wikipedia.org/wiki/USB4">USB4</a> allows tunneling USB 3.2, DisplayPort 1.4, PCI Express(!)</li>
+<li><a href="https://github.com/curtiszimmerman/rcp100">RPC100</a> is a great little Linux router distribution</li>
+<li>A work colleague mentioned an interesting issue where interrupts were msised from a PCI Express device.
+The old code (provided by the vendor) did status register reads in a Linux application. The workaround was to
+read in the kernel. Looking at <code>lspci</code> the BAR is mapped <code>prefetchable</code> where as the status register is clear-on-read.
+I wonder if this explains the issue?</li>
+<li>Linux has an upstream driver for
+<a href="https://github.com/torvalds/linux/commits/master/drivers/net/ethernet/marvell/prestera">Prestera DX</a>
+<ul>
+<li>this was added in September 2020</li>
+</ul>
+</li>
+<li>Intel sponsors something called the <a href="https://01.org/lkp/documentation/0-day-test-service">0-Day service</a>
+this will run <a href="https://github.com/intel/lkp-tests">Linux kernel performance tests</a>
+and send emails (from &ldquo;kernel test robot&rdquo;) when a test fails (regression).</li>
+<li>Linux <a href="https://github.com/torvalds/linux/blob/585e5b17b92dead8a3aca4e3c9876fbca5f7e0ba/include/linux/netdevice.h">netdevice.h</a>
+has functions for incrementing statistics:
+<ul>
+<li><code>dev_sw_netstats_rx_add</code> updates <code>pcpu_sw_netstats</code></li>
+<li><code>dev_sw_netstats_tx_add</code> (not committed to file yet)</li>
+<li><code>dev_lstats_add</code> updates <code>pcpu_lstats</code> - not sure who looks at what!</li>
+</ul>
+</li>
+<li>Switched blog to <a href="https://gohugo.io/">Hugo</a> and started publishing weekly links, instead of technical notes, which are rare.</li>
+</ul>
+
+</div>
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main><footer class="footer">
+    <span>&copy; 2020 <a href="https://alipullup.github.io/">Ali&#39;s Posts</a></span>
+    <span>&middot;</span>
+    <span>Powered by <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a></span>
+    <span>&middot;</span>
+    <span>Theme <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top" accesskey="g">
+    <button class="top-link" id="top-link" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6">
+            <path d="M12 6H0l6-6z" /></svg>
+    </button>
+</a>
+
+
+<script src="https://alipullup.github.io/assets/js/highlight.min.e7afc2928c0925d65c4732dfebe147014d91299a98e819e4b42f25c4fa68e91c.js" integrity="sha256-56/CkowJJdZcRzLf6&#43;FHAU2RKZqY6BnktC8lxPpo6Rw="></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    window.onload = function () {
+        if (localStorage.getItem("menu-scroll-position")) {
+            document.getElementById('menu').scrollLeft = localStorage.getItem("menu-scroll-position");
+        }
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            document.querySelector(`[id='${id}']`).scrollIntoView({
+                behavior: "smooth"
+            });
+        });
+    });
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+    function menu_on_scroll() {
+        localStorage.setItem("menu-scroll-position", document.getElementById('menu').scrollLeft);
+    }
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+</script>
+
+</body>
+
+</html>
