@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>what-i-learned on Ali&#39;s Posts</title>
+    <link>https://alipullup.github.io/tags/what-i-learned/</link>
+    <description>Recent content in what-i-learned on Ali&#39;s Posts</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/tags/what-i-learned/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What I Learned 2020-11-16</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-11-16/</link>
+      <pubDate>Mon, 16 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-11-16/</guid>
+      <description>Linux device tree documentation can be written in YAML. Linux has hot and cold pages - for data a device will DMA to, you&amp;rsquo;d want to use a cold pages (using GPF_COLD allocation flag) - also see this link Freescale DPAA1 platforms will be getting support for XDP! 16-bit sign extension bug bites again: (ntohs(value) &amp;lt;&amp;lt; 16) will sign-extend when assigned to a 64-bit value A return trampoline (&amp;ldquo;retpoline&amp;rdquo;) may be enabled in GCC using -mindirect-branch=thunk-extern for the Linux kernel.</description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2020-11-09</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-11-09/</link>
+      <pubDate>Wed, 11 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-11-09/</guid>
+      <description>Left shift of uint16_t promotes it to an int, and will sign-extend it if assigning a 64-bit value, e.g. code like: uint64_t x; uint16_t y=0x8000; x=y&amp;lt;&amp;lt;16; will assign x to ffffffff80000000 TCP syn-cookies have lots of problems! Just saw a fix and Google search found various issues that have been found over time. Not clear if the syn cookie enabling is per-port or global. Qualcomm has an IP Accelerator built into some SoC.</description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2020-11-02</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-11-02/</link>
+      <pubDate>Mon, 02 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-11-02/</guid>
+      <description> Ghidra - tons of tutorials on YouTube In search of other build systems: DBMS Kbuild Linux jargon: &amp;ldquo;Reverse Christmas tree&amp;rdquo; - put longest declaration in function at top syzbot - finds so many bugs automatically! Notes on how to submit patch to Linux mailing list Linux has a self tests directory to exercise individual code paths in the kernel Example of Linux self tests: PowerPC self tests  </description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2020-10-26</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-10-26/</link>
+      <pubDate>Mon, 26 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-10-26/</guid>
+      <description>Linux facility MODULE_SOFTDEP for adding dependency between modules, even if one doesn&amp;rsquo;t use the symbol from the other Linux macros for dealing with atomic sections of code, see this API page  non_block_start() / non_block_end() might_sleep() / cant_sleep() / might_sleep_if(cond) cant_migrate()   Linux has deprecated in_irq() / in_interrupt() - see this email Use a passed in parameter instead, e.g. may_sleep Use lockdep_assert_held(lock) for checking MACSec 802.1AE uses hostapd/wpa_supplicant to do L2 security!</description>
+    </item>
+    
+  </channel>
+</rss>

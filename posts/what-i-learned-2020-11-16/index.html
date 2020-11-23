@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>What I Learned 2020-11-02 - Ali&#39;s Posts</title>
+<title>What I Learned 2020-11-16 - Ali&#39;s Posts</title>
 
 <meta name="keywords" content="what-i-learned" />
-<meta name="description" content=" Ghidra - tons of tutorials on YouTube In search of other build systems: DBMS Kbuild Linux jargon: &ldquo;Reverse Christmas tree&rdquo; - put longest declaration in function at top syzbot - finds so many bugs automatically! Notes on how to submit patch to Linux mailing list Linux has a self tests directory to exercise individual code paths in the kernel Example of Linux self tests: PowerPC self tests  ">
+<meta name="description" content="Linux device tree documentation can be written in YAML. Linux has hot and cold pages - for data a device will DMA to, you&rsquo;d want to use a cold pages (using GPF_COLD allocation flag) - also see this link Freescale DPAA1 platforms will be getting support for XDP! 16-bit sign extension bug bites again: (ntohs(value) &lt;&lt; 16) will sign-extend when assigned to a 64-bit value A return trampoline (&ldquo;retpoline&rdquo;) may be enabled in GCC using -mindirect-branch=thunk-extern for the Linux kernel.">
 <meta name="author" content="">
-<link rel="canonical" href="https://alipullup.github.io/posts/what-i-learned-2020-11-02/" />
+<link rel="canonical" href="https://alipullup.github.io/posts/what-i-learned-2020-11-16/" />
 <link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
     as="style">
 
@@ -88,22 +88,56 @@
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">
-      What I Learned 2020-11-02
+      What I Learned 2020-11-16
     </h1>
-    <div class="post-meta">November 2, 2020
+    <div class="post-meta">November 16, 2020
 
     </div>
   </header> 
 
   <div class="post-content">
 <ul>
-<li><a href="https://ghidra-sre.org/">Ghidra</a> - tons of tutorials on YouTube</li>
-<li>In search of other build systems: <a href="https://github.com/abcminiuser/dmbs">DBMS</a> <a href="https://www.kernel.org/doc/html/latest/kbuild/index.html">Kbuild</a></li>
-<li>Linux jargon: &ldquo;Reverse Christmas tree&rdquo; - put longest declaration in function <a href="http://lkml.iu.edu/hypermail/linux/kernel/1611.0/02477.html">at top</a></li>
-<li><a href="https://lwn.net/Articles/749910/">syzbot</a> - finds so many bugs automatically!</li>
-<li>Notes on <a href="https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches">how to submit patch to Linux</a> mailing list</li>
-<li>Linux has a <a href="https://www.kernel.org/doc/html/v4.15/dev-tools/kselftest.html">self tests</a> directory to exercise individual code paths in the kernel</li>
-<li>Example of Linux self tests: <a href="https://github.com/torvalds/linux/tree/master/tools/testing/selftests/powerpc">PowerPC self tests</a></li>
+<li>Linux <a href="https://elinux.org/Device_Tree_Usage">device tree</a> 
+<a href="https://lwn.net/Articles/771621/">documentation can be written in YAML</a>.</li>
+<li>Linux has <a href="https://lwn.net/Articles/14768/">hot and cold pages</a> - for data a device will
+DMA to, you&rsquo;d want to use a cold pages (using <code>GPF_COLD</code> allocation flag) - 
+also see <a href="https://www.kernel.org/doc/gorman/html/understand/understand009.html">this link</a></li>
+<li>Freescale <a href="https://lore.kernel.org/netdev/AM6PR04MB39764B6CAEEA27863F52A419ECE30@AM6PR04MB3976.eurprd04.prod.outlook.com/">DPAA1 platforms will be getting support for XDP</a>!</li>
+<li>16-bit sign extension bug bites again: <code>(ntohs(value) &lt;&lt; 16)</code> will sign-extend when assigned to a 64-bit value</li>
+<li>A <a href="https://support.google.com/faqs/answer/7625886">return trampoline</a>
+(&ldquo;retpoline&rdquo;) may be enabled in GCC using <code>-mindirect-branch=thunk-extern</code> for the Linux kernel.
+Mitigation on Windows can be verified using <a href="https://github.com/Microsoft/SpeculationControl">this PowerShell script</a>.
+I had forgotten about this until I ran into it today.</li>
+<li>In the critical path every cycle matters: touching an additional byte could mean another dirty cache-line.</li>
+<li>Instead of using <code>#ifdef CONFIG_xxx</code> in the Linux kernel, use <code>IS_ENABLED(CONFIG_xxx)</code> -
+<a href="https://elixir.bootlin.com/linux/latest/source/include/linux/kconfig.h#L73">see definition</a></li>
+<li>Aside: the above lets one easily search the code and find outdated features.</li>
+<li>Can I have a generic empty function callback function? e.g. <code>void generic_callback(void)</code> which is
+used as a stub for concrete <code>void actual_callback(int)</code> or such? It depends on calling conventions
+and who cleans the parameters. When <a href="https://en.wikipedia.org/wiki/X86_calling_conventions#Caller_clean-up">caller cleans up</a>
+yes, otherwise no. Another concern is global optimization and
+<a href="https://stackoverflow.com/questions/7046739/lto-devirtualization-and-virtual-tables">devirtualization</a>.</li>
+<li>Windows file system takes <code>wchar_t</code> but really treats it like <code>uint16_t</code> (ill-formed UTF-16 allowed).
+<a href="https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file?redirectedfrom=MSDN#maxpath">See this link</a>.
+As I understand it, it&rsquo;s not UCS-2, as UCS-2 is fixed width. 
+<a href="https://simonsapin.github.io/wtf-8/#ill-formed-utf-16">This link</a> calls it &ldquo;WTF-16&rdquo;.
+From the same source, I learned of the <a href="https://simonsapin.github.io/wtf-8/">WTF-8</a> encoding, which
+is &ldquo;a hack intended to be used internally in self-contained systems with components that need to 
+potentially ill-formed UTF-16 for legacy reasons&rdquo;.
+It seems like this causes its own set of issues.</li>
+<li><a href="https://googleprojectzero.blogspot.com/2016/02/the-definitive-guide-on-win32-to-nt.html">Windows&rsquo;s paths are complicated</a>.
+Apparently the function <code>RtlDosPathNameToRelativeNtPathName_U</code> converts from various formats to the &ldquo;NT&rdquo; format.
+Also see the following pages by Microsoft: 
+<a href="https://docs.microsoft.com/en-us/windows/win32/intl/security-considerations--international-features">Security Considerations: International Features</a>
+, and 
+<a href="https://docs.microsoft.com/en-us/dotnet/standard/io/file-path-formats#canonicalizing-separators">File path formats on Windows systems</a>.</li>
+<li>Every recent Windows version has a .NET compiler installed! <code>c:\Windows\Microsoft.NET\Framework\v4.0.30319&gt;csc.exe</code></li>
+<li>As look at bug reports, it&rsquo;s shocking how common certain errors are. Most of the reported errors are in the error path.
+I mostly agree with <a href="http://cwe.mitre.org/top25/archive/2020/2020_cwe_top25.html">CWE Top 25</a>, except
+I would put use of uninitialized memory or forgetting to unlock / lock higher. I suppose it depends on
+the programming language. I&rsquo;m using C these days. In C++, using RAII and <code>std::lock_guard</code> would get
+rid of many errors.</li>
+<li>Jay Carlson has an <a href="https://jaycarlson.net/embedded-linux/">amazing embedded Linux</a> page!</li>
 </ul>
 
 </div>

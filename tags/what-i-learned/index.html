@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>What I Learned 2020-11-02 - Ali&#39;s Posts</title>
+<title>what-i-learned - Ali&#39;s Posts</title>
 
-<meta name="keywords" content="what-i-learned" />
-<meta name="description" content=" Ghidra - tons of tutorials on YouTube In search of other build systems: DBMS Kbuild Linux jargon: &ldquo;Reverse Christmas tree&rdquo; - put longest declaration in function at top syzbot - finds so many bugs automatically! Notes on how to submit patch to Linux mailing list Linux has a self tests directory to exercise individual code paths in the kernel Example of Linux self tests: PowerPC self tests  ">
+<meta name="keywords" content="" />
+<meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://alipullup.github.io/posts/what-i-learned-2020-11-02/" />
+<link rel="canonical" href="https://alipullup.github.io/tags/what-i-learned/" />
 <link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
     as="style">
 
@@ -23,13 +23,14 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.78.1" />
+<link rel="alternate" type="application/rss&#43;xml" href="https://alipullup.github.io/tags/what-i-learned/index.xml">
 
 
 
 
 </head>
 
-<body class="single" id="top">
+<body class="list" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.body.classList.add('dark');
@@ -83,36 +84,70 @@
     </nav>
 </header>
 
-    <main class="main">
+    <main class="main"> 
+<header class="page-header">
+  <h1>what-i-learned</h1>
+</header>
 
-<article class="post-single">
-  <header class="post-header">
-    <h1 class="post-title">
-      What I Learned 2020-11-02
-    </h1>
-    <div class="post-meta">November 2, 2020
 
-    </div>
-  </header> 
 
-  <div class="post-content">
-<ul>
-<li><a href="https://ghidra-sre.org/">Ghidra</a> - tons of tutorials on YouTube</li>
-<li>In search of other build systems: <a href="https://github.com/abcminiuser/dmbs">DBMS</a> <a href="https://www.kernel.org/doc/html/latest/kbuild/index.html">Kbuild</a></li>
-<li>Linux jargon: &ldquo;Reverse Christmas tree&rdquo; - put longest declaration in function <a href="http://lkml.iu.edu/hypermail/linux/kernel/1611.0/02477.html">at top</a></li>
-<li><a href="https://lwn.net/Articles/749910/">syzbot</a> - finds so many bugs automatically!</li>
-<li>Notes on <a href="https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches">how to submit patch to Linux</a> mailing list</li>
-<li>Linux has a <a href="https://www.kernel.org/doc/html/v4.15/dev-tools/kselftest.html">self tests</a> directory to exercise individual code paths in the kernel</li>
-<li>Example of Linux self tests: <a href="https://github.com/torvalds/linux/tree/master/tools/testing/selftests/powerpc">PowerPC self tests</a></li>
-</ul>
+<article class="post-entry tag-entry"> 
 
-</div>
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://alipullup.github.io/tags/what-i-learned">what-i-learned</a></li>
-    </ul>
-  </footer>
+  <header class="entry-header">
+    <h2>
+      What I Learned 2020-11-16
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Linux device tree documentation can be written in YAML. Linux has hot and cold pages - for data a device will DMA to, you’d want to use a cold pages (using GPF_COLD allocation flag) - also see this link Freescale DPAA1 platforms will be getting support for XDP! 16-bit sign extension bug bites again: (ntohs(value) &lt;&lt; 16) will sign-extend when assigned to a 64-bit value A return trampoline (“retpoline”) may be enabled in GCC using -mindirect-branch=thunk-extern for the Linux kernel....</p>
+  </section>
+  <footer class="entry-footer">November 16, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-11-16" href="https://alipullup.github.io/posts/what-i-learned-2020-11-16/"></a>
 </article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2020-11-09
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Left shift of uint16_t promotes it to an int, and will sign-extend it if assigning a 64-bit value, e.g. code like: uint64_t x; uint16_t y=0x8000; x=y&lt;&lt;16; will assign x to ffffffff80000000 TCP syn-cookies have lots of problems! Just saw a fix and Google search found various issues that have been found over time. Not clear if the syn cookie enabling is per-port or global. Qualcomm has an IP Accelerator built into some SoC....</p>
+  </section>
+  <footer class="entry-footer">November 11, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-11-09" href="https://alipullup.github.io/posts/what-i-learned-2020-11-09/"></a>
+</article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2020-11-02
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p> Ghidra - tons of tutorials on YouTube In search of other build systems: DBMS Kbuild Linux jargon: “Reverse Christmas tree” - put longest declaration in function at top syzbot - finds so many bugs automatically! Notes on how to submit patch to Linux mailing list Linux has a self tests directory to exercise individual code paths in the kernel Example of Linux self tests: PowerPC self tests  ...</p>
+  </section>
+  <footer class="entry-footer">November 2, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-11-02" href="https://alipullup.github.io/posts/what-i-learned-2020-11-02/"></a>
+</article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2020-10-26
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Linux facility MODULE_SOFTDEP for adding dependency between modules, even if one doesn’t use the symbol from the other Linux macros for dealing with atomic sections of code, see this API page  non_block_start() / non_block_end() might_sleep() / cant_sleep() / might_sleep_if(cond) cant_migrate()   Linux has deprecated in_irq() / in_interrupt() - see this email Use a passed in parameter instead, e.g. may_sleep Use lockdep_assert_held(lock) for checking MACSec 802.1AE uses hostapd/wpa_supplicant to do L2 security!...</p>
+  </section>
+  <footer class="entry-footer">October 26, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-10-26" href="https://alipullup.github.io/posts/what-i-learned-2020-10-26/"></a>
+</article>
+
     </main><footer class="footer">
     <span>&copy; 2020 <a href="https://alipullup.github.io/">Ali&#39;s Posts</a></span>
     <span>&middot;</span>
@@ -128,8 +163,7 @@
 </a>
 
 
-<script src="https://alipullup.github.io/assets/js/highlight.min.e7afc2928c0925d65c4732dfebe147014d91299a98e819e4b42f25c4fa68e91c.js" integrity="sha256-56/CkowJJdZcRzLf6&#43;FHAU2RKZqY6BnktC8lxPpo6Rw="></script>
-<script>hljs.initHighlightingOnLoad();</script>
+
 <script>
     window.onload = function () {
         if (localStorage.getItem("menu-scroll-position")) {

@@ -6,7 +6,16 @@
     <description>Recent content on Ali&#39;s Posts</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 11 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 16 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What I Learned 2020-11-16</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-11-16/</link>
+      <pubDate>Mon, 16 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-11-16/</guid>
+      <description>Linux device tree documentation can be written in YAML. Linux has hot and cold pages - for data a device will DMA to, you&amp;rsquo;d want to use a cold pages (using GPF_COLD allocation flag) - also see this link Freescale DPAA1 platforms will be getting support for XDP! 16-bit sign extension bug bites again: (ntohs(value) &amp;lt;&amp;lt; 16) will sign-extend when assigned to a 64-bit value A return trampoline (&amp;ldquo;retpoline&amp;rdquo;) may be enabled in GCC using -mindirect-branch=thunk-extern for the Linux kernel.</description>
+    </item>
+    
     <item>
       <title>What I Learned 2020-11-09</title>
       <link>https://alipullup.github.io/posts/what-i-learned-2020-11-09/</link>
