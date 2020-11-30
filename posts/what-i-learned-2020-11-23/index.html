@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>What I Learned 2020-11-23 - Ali&#39;s Posts</title>
+
+<meta name="keywords" content="what-i-learned" />
+<meta name="description" content="USB UserBenchmark website has benchmarks of USB flash drives. Linux supports &ldquo;WWAN&rdquo; (LTE) modems - I have no idea how these work! There is the USB cdc_mbim driver, but now there&rsquo;s talk of adding a &ldquo;WWAN&rdquo; device. There are command line programs such as qmicli, mmcli, and mbicli. TuxMake provides &ldquo;portable and repeatable Linux kernel builds&rdquo;. There is also TuxBuild which provides Linux kernel builds as a service. Both tools are by Linaro.">
+<meta name="author" content="">
+<link rel="canonical" href="https://alipullup.github.io/posts/what-i-learned-2020-11-23/" />
+<link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
+    as="style">
+
+<link rel="manifest" href="https://alipullup.github.io/site.webmanifest">
+<link rel="icon" href="https://alipullup.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alipullup.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alipullup.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alipullup.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alipullup.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.78.1" />
+
+
+
+
+</head>
+
+<body class="single" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        .theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://alipullup.github.io/" accesskey="h">Ali&#39;s Posts</a>
+            <span class="logo-switches">
+                <span class="theme-toggle">
+                    <a id="theme-toggle" accesskey="t">
+                        <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </a>
+                </span>
+                
+            </span>
+        </div>
+        <ul class="menu" id="menu" onscroll="menu_on_scroll()"></ul>
+    </nav>
+</header>
+
+    <main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">
+      What I Learned 2020-11-23
+    </h1>
+    <div class="post-meta">November 23, 2020
+
+    </div>
+  </header> 
+
+  <div class="post-content">
+<ul>
+<li><a href="https://usb.userbenchmark.com/">USB UserBenchmark</a> website has benchmarks of USB flash drives.</li>
+<li>Linux supports &ldquo;WWAN&rdquo; (LTE) modems - I have no idea how these work! There is the
+USB <a href="https://www.kernel.org/doc/Documentation/networking/cdc_mbim.txt">cdc_mbim</a> driver,
+but now there&rsquo;s talk of adding a &ldquo;WWAN&rdquo; device. There are command line programs such as
+<a href="https://www.freedesktop.org/software/libqmi/man/latest/qmicli.1.html">qmicli</a>,
+<a href="https://www.freedesktop.org/software/ModemManager/man/1.0.0/mmcli.8.html">mmcli</a>, and
+<a href="https://www.freedesktop.org/software/libmbim/man/latest/mbimcli.1.html">mbicli</a>.</li>
+<li><a href="https://gitlab.com/Linaro/tuxmake">TuxMake</a> provides &ldquo;portable and repeatable Linux kernel builds&rdquo;.
+There is also <a href="https://gitlab.com/Linaro/tuxbuild">TuxBuild</a> which provides Linux kernel builds
+as a service. Both tools are by Linaro.</li>
+<li>The manual page for <a href="https://git-scm.com/docs/git-log">git log</a> is quite &hellip; rich.</li>
+<li><a href="https://www.gnu.org/licenses/gpl-3.0.html#section5">GPL requires attribution</a>.
+If the product has a user interface, it should display an &ldquo;appropriate&rdquo; notice.
+Documentation should also include such a notice.
+For example, <a href="https://www.downloads.netgear.com/files/GPLnotice.pdf">NETGEAR uses this notice</a>.</li>
+<li><a href="https://github.com/osandov/drgn">drgn</a> is a programmable debugger (Python), mainly for use with the Linux kernel.
+It is an alternative to the <a href="https://github.com/crash-utility/crash">crash</a> utility.</li>
+<li><code>netdev_dbg()</code> is preferred to <code>pr_debug()</code> (or <code>printk()</code>) for network devices.</li>
+<li><code>__has_attribute(x)</code> is supported on gcc &gt;= 5, clang &gt;= 2.9 and icc &gt;= 17.
+Good way to check whether a compiler supports a feature.</li>
+<li>Adding custom data to Linux SKB can be done using
+<a href="https://www.youtube.com/watch?v=3xelUe_mTko">SKB extensions</a> (see <a href="https://01.org/linuxgraphics/gfx-docs/drm/networking/kapi.html#c.skb_ext">API link</a>).
+Extension memory is released when the SKB is free&rsquo;d, and cloning is handled. 
+Motivated by the limited <code>cb</code> size, and difficulty in adding extensions. When SKB extensions make sense:
+<ul>
+<li>Data is related to skb/packet aggregate, and</li>
+<li>Data should be free&rsquo;d when skb is free&rsquo;d, and</li>
+<li>Data is not going to be needed in the normal case (udp, tcp, &hellip;), and</li>
+<li>No actions needed on clone/free (e.g. callbacks)
+Alternatives:</li>
+<li>Store data in shared info <code>struct skb_shared_info</code> block (unchanged on clone), or</li>
+<li>Add second control buffer block at end of <code>struct sk_buff</code>, or</li>
+<li>Add a control block at end of <code>struct skb_buff_fclones</code> (only works for outgoing SKBs allocated via <code>alloc_skb_fclone</code>)</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://alipullup.github.io/tags/what-i-learned">what-i-learned</a></li>
+    </ul>
+  </footer>
+</article>
+    </main><footer class="footer">
+    <span>This work is licensed under a Creative Commons Attribution 4.0 International License.</span>
+    <span>&middot;</span>
+    <span>Powered by <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a></span>
+    <span>&middot;</span>
+    <span>Theme <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top" accesskey="g">
+    <button class="top-link" id="top-link" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6">
+            <path d="M12 6H0l6-6z" /></svg>
+    </button>
+</a>
+
+
+<script src="https://alipullup.github.io/assets/js/highlight.min.e7afc2928c0925d65c4732dfebe147014d91299a98e819e4b42f25c4fa68e91c.js" integrity="sha256-56/CkowJJdZcRzLf6&#43;FHAU2RKZqY6BnktC8lxPpo6Rw="></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    window.onload = function () {
+        if (localStorage.getItem("menu-scroll-position")) {
+            document.getElementById('menu').scrollLeft = localStorage.getItem("menu-scroll-position");
+        }
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            document.querySelector(`[id='${id}']`).scrollIntoView({
+                behavior: "smooth"
+            });
+        });
+    });
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+    function menu_on_scroll() {
+        localStorage.setItem("menu-scroll-position", document.getElementById('menu').scrollLeft);
+    }
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+</script>
+
+</body>
+
+</html>

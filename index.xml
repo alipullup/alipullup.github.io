@@ -6,7 +6,17 @@
     <description>Recent content on Ali&#39;s Posts</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 16 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 23 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What I Learned 2020-11-23</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-11-23/</link>
+      <pubDate>Mon, 23 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-11-23/</guid>
+      <description>USB UserBenchmark website has benchmarks of USB flash drives. Linux supports &amp;ldquo;WWAN&amp;rdquo; (LTE) modems - I have no idea how these work! There is the USB cdc_mbim driver, but now there&amp;rsquo;s talk of adding a &amp;ldquo;WWAN&amp;rdquo; device. There are command line programs such as qmicli, mmcli, and mbicli. TuxMake provides &amp;ldquo;portable and repeatable Linux kernel builds&amp;rdquo;. There is also TuxBuild which provides Linux kernel builds as a service. Both tools are by Linaro.</description>
+    </item>
+    
     <item>
       <title>What I Learned 2020-11-16</title>
       <link>https://alipullup.github.io/posts/what-i-learned-2020-11-16/</link>
