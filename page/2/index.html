@@ -92,6 +92,38 @@
 
   <header class="entry-header">
     <h2>
+      Disk Encryption Overview
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Introduction This document describes disk encryption implemented using a combination of software and FPGA.
+--Data--&gt;FPGA--&gt;Disks|MicrocontrollerThe data was encrypted using AES, in counter mode, with flexible key width.
+For various reasons, we did not use an authenticated encryption mode.
+A FPGA was responsible for encryption, to keep up with the high data rate. Control software running on a microcontroller was responsible for loading up the AES key schedule during bulk streaming operations....</p>
+  </section>
+  <footer class="entry-footer">September 16, 2008
+</footer>
+  <a class="entry-link" aria-label="post link to Disk Encryption Overview" href="https://alipullup.github.io/posts/disk-encryption-overview/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      Gigabit Ethernet Protocol
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Introduction This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.
+ Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data packet, wait the IPG amount, then send the next packet. Round-trip time (RTT) was determined using a timestamp embedded int he packets....</p>
+  </section>
+  <footer class="entry-footer">January 24, 2006
+</footer>
+  <a class="entry-link" aria-label="post link to Gigabit Ethernet Protocol" href="https://alipullup.github.io/posts/gigabit-ethernet-protocol/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
       Under the Hood of Ada
     </h2>
   </header>

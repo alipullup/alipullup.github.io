@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>Posts - Ali&#39;s Posts</title>
+<title>What I Learned 2020-12-07 - Ali&#39;s Posts</title>
 
-<meta name="keywords" content="" />
-<meta name="description" content="">
+<meta name="keywords" content="what-i-learned" />
+<meta name="description" content="ACM SIGPLAN Empirical Evaluation Guidelines  Make benchmarks reproducible Use full applications, not micro-benchmarks (&ldquo;kernels&rdquo;) Run many trials (5 isn&rsquo;t enough) Report data distribution (histogram, along with summary statistics)   If I had to run a benchmark, what would I do?  Ensure system is quiet, see this link, and this link  Disable CPU frequency scaling / power management Disable hyper threading Disable ASLR   Test on different systems  Different CPU Different OS Different compilers   For micro-benchmarks use a standard library, like Google&rsquo;s Benchmark I wish there was an updated version of stabilizer, or a similar tool that could run the same program loaded at different offsets, so I would figure out the sensitivity   Scapy to the rescue!">
 <meta name="author" content="">
-<link rel="canonical" href="https://alipullup.github.io/posts/" />
+<link rel="canonical" href="https://alipullup.github.io/posts/what-i-learned-2020-12-07/" />
 <link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
     as="style">
 
@@ -23,14 +23,13 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.78.1" />
-<link rel="alternate" type="application/rss&#43;xml" href="https://alipullup.github.io/posts/index.xml">
 
 
 
 
 </head>
 
-<body class="list" id="top">
+<body class="single" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.body.classList.add('dark');
@@ -84,68 +83,60 @@
     </nav>
 </header>
 
-    <main class="main"> 
-<header class="page-header">
-  <h1>Posts</h1>
-</header>
+    <main class="main">
 
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">
+      What I Learned 2020-12-07
+    </h1>
+    <div class="post-meta">December 7, 2020
 
+    </div>
+  </header> 
 
-<article class="post-entry"> 
+  <div class="post-content">
+<ul>
+<li><a href="https://www.sigplan.org/Resources/EmpiricalEvaluation/">ACM SIGPLAN Empirical Evaluation Guidelines</a>
+<ul>
+<li>Make benchmarks reproducible</li>
+<li>Use full applications, not micro-benchmarks (&ldquo;kernels&rdquo;)</li>
+<li>Run many trials (5 isn&rsquo;t enough)</li>
+<li>Report data distribution (histogram, along with summary statistics)</li>
+</ul>
+</li>
+<li>If I had to run a benchmark, what would I do?
+<ul>
+<li>Ensure system is quiet, see <a href="https://easyperf.net/blog/2019/08/02/Perf-measurement-environment-on-Linux">this link</a>, and <a href="https://llvm.org/docs/Benchmarking.html">this link</a>
+<ul>
+<li>Disable CPU frequency scaling / power management</li>
+<li>Disable hyper threading</li>
+<li>Disable ASLR</li>
+</ul>
+</li>
+<li>Test on different systems
+<ul>
+<li>Different CPU</li>
+<li>Different OS</li>
+<li>Different compilers</li>
+</ul>
+</li>
+<li>For micro-benchmarks use a standard library, like <a href="https://github.com/google/benchmark">Google&rsquo;s Benchmark</a></li>
+<li>I wish there was an updated version of <a href="https://github.com/ccurtsinger/stabilizer">stabilizer</a>, or a similar tool that could run the same program loaded at different offsets, so I would figure out the sensitivity</li>
+</ul>
+</li>
+<li><a href="https://scapy.net/">Scapy</a> to the rescue! I needed to build a raw UDP frame and a colleague was sending packets, using 
+<a href="https://en.wikipedia.org/wiki/Tcpdump">tcpdump</a> to capture when he could have done the following: 
+<code>Ether(dst='FF:FF:FF:FF:FF:FF', src='01:02:03:04:05:06') /IP(dst='255.255.255.255', src='192.168.1.1', id=5683, flags='DF') / UDP(sport=1234, dport=1234) / Raw('test\n')</code></li>
+</ul>
 
-  <header class="entry-header">
-    <h2>
-      Disk Encryption Overview
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Introduction This document describes disk encryption implemented using a combination of software and FPGA.
---Data--&gt;FPGA--&gt;Disks|MicrocontrollerThe data was encrypted using AES, in counter mode, with flexible key width.
-For various reasons, we did not use an authenticated encryption mode.
-A FPGA was responsible for encryption, to keep up with the high data rate. Control software running on a microcontroller was responsible for loading up the AES key schedule during bulk streaming operations....</p>
-  </section>
-  <footer class="entry-footer">September 16, 2008
-</footer>
-  <a class="entry-link" aria-label="post link to Disk Encryption Overview" href="https://alipullup.github.io/posts/disk-encryption-overview/"></a>
+</div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://alipullup.github.io/tags/what-i-learned">what-i-learned</a></li>
+    </ul>
+  </footer>
 </article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      Gigabit Ethernet Protocol
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Introduction This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.
- Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data packet, wait the IPG amount, then send the next packet. Round-trip time (RTT) was determined using a timestamp embedded int he packets....</p>
-  </section>
-  <footer class="entry-footer">January 24, 2006
-</footer>
-  <a class="entry-link" aria-label="post link to Gigabit Ethernet Protocol" href="https://alipullup.github.io/posts/gigabit-ethernet-protocol/"></a>
-</article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      Under the Hood of Ada
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Introduction The following is an old document I wrote when debugging the GCC Ada front-end for MIPS. Our platform was not officially supported and I was tasked with finding and fixing various issued related to exceptions, and tasking.
-I’ve used that -gnatG switch to look at the processed source produced by GNAT and done some analysis. What follows is a summary and highlights from that analysis.
-Exceptions The exception
-Blocking_Error : exception; This is turned into...</p>
-  </section>
-  <footer class="entry-footer">April 1, 2005
-</footer>
-  <a class="entry-link" aria-label="post link to Under the Hood of Ada" href="https://alipullup.github.io/posts/under-the-hood-of-ada/"></a>
-</article>
-<footer class="page-footer">
-  <nav class="pagination">
-    <a class="prev" href="/posts/">« Prev Page</a>
-  </nav>
-</footer>
-
     </main><footer class="footer">
     <span>This work is licensed under a Creative Commons Attribution 4.0 International License.</span>
     <span>&middot;</span>

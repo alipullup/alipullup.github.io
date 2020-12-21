@@ -92,6 +92,50 @@
 
   <header class="entry-header">
     <h2>
+      What I Learned 2020-12-14
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p> I didn’t know there was a Research Wahlberg meme, see this twitter account. Interesting article about Haskell naming conventions Interesting Linux kernel issue where L1 ASPM was calculated incorrectly thus leading to slow network performance.  ...</p>
+  </section>
+  <footer class="entry-footer">December 14, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-12-14" href="https://alipullup.github.io/posts/what-i-learned-2020-12-14/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2020-12-07
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>ACM SIGPLAN Empirical Evaluation Guidelines  Make benchmarks reproducible Use full applications, not micro-benchmarks (“kernels”) Run many trials (5 isn’t enough) Report data distribution (histogram, along with summary statistics)   If I had to run a benchmark, what would I do?  Ensure system is quiet, see this link, and this link  Disable CPU frequency scaling / power management Disable hyper threading Disable ASLR   Test on different systems  Different CPU Different OS Different compilers   For micro-benchmarks use a standard library, like Google’s Benchmark I wish there was an updated version of stabilizer, or a similar tool that could run the same program loaded at different offsets, so I would figure out the sensitivity   Scapy to the rescue!...</p>
+  </section>
+  <footer class="entry-footer">December 7, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-12-07" href="https://alipullup.github.io/posts/what-i-learned-2020-12-07/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2020-11-30
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>AutoHotkey has a nifty script for typing Greek letters   I started the online course Improving your statistical inferences by Daniel Lakens. It’s been a great refresher. I am considering publishing my notes online.
+The course starts by looking at p values. If nothing else, everyone should go through the first week of the course.
+    H0 True H1 True     Significant finding False positive (α) True positive (1-α)   Non-significant finding True negative (1-β) False negative (β)    Here is a good visualization by Kristoffer Magnusson...</p>
+  </section>
+  <footer class="entry-footer">November 30, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-11-30" href="https://alipullup.github.io/posts/what-i-learned-2020-11-30/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
       What I Learned 2020-11-23
     </h2>
   </header>
@@ -194,55 +238,11 @@ The board_init_f function calls various other functions:...</p>
 </footer>
   <a class="entry-link" aria-label="post link to U-Boot Notes" href="https://alipullup.github.io/posts/u-boot-notes/"></a>
 </article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      Disk Encryption Overview
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Introduction This document describes disk encryption implemented using a combination of software and FPGA.
---Data--&gt;FPGA--&gt;Disks|MicrocontrollerThe data was encrypted using AES, in counter mode, with flexible key width.
-For various reasons, we did not use an authenticated encryption mode.
-A FPGA was responsible for encryption, to keep up with the high data rate. Control software running on a microcontroller was responsible for loading up the AES key schedule during bulk streaming operations....</p>
-  </section>
-  <footer class="entry-footer">September 16, 2008
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="/page/2/">Next Page »</a>
+  </nav>
 </footer>
-  <a class="entry-link" aria-label="post link to Disk Encryption Overview" href="https://alipullup.github.io/posts/disk-encryption-overview/"></a>
-</article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      Gigabit Ethernet Protocol
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Introduction This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.
- Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data packet, wait the IPG amount, then send the next packet. Round-trip time (RTT) was determined using a timestamp embedded int he packets....</p>
-  </section>
-  <footer class="entry-footer">January 24, 2006
-</footer>
-  <a class="entry-link" aria-label="post link to Gigabit Ethernet Protocol" href="https://alipullup.github.io/posts/gigabit-ethernet-protocol/"></a>
-</article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      Under the Hood of Ada
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Introduction The following is an old document I wrote when debugging the GCC Ada front-end for MIPS. Our platform was not officially supported and I was tasked with finding and fixing various issued related to exceptions, and tasking.
-I’ve used that -gnatG switch to look at the processed source produced by GNAT and done some analysis. What follows is a summary and highlights from that analysis.
-Exceptions The exception
-Blocking_Error : exception; This is turned into...</p>
-  </section>
-  <footer class="entry-footer">April 1, 2005
-</footer>
-  <a class="entry-link" aria-label="post link to Under the Hood of Ada" href="https://alipullup.github.io/posts/under-the-hood-of-ada/"></a>
-</article>
 
     </main><footer class="footer">
     <span>This work is licensed under a Creative Commons Attribution 4.0 International License.</span>

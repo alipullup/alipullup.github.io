@@ -7,7 +7,36 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 23 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What I Learned 2020-12-14</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-12-14/</link>
+      <pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-12-14/</guid>
+      <description> I didn&amp;rsquo;t know there was a Research Wahlberg meme, see this twitter account. Interesting article about Haskell naming conventions Interesting Linux kernel issue where L1 ASPM was calculated incorrectly thus leading to slow network performance.  </description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2020-12-07</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-12-07/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-12-07/</guid>
+      <description>ACM SIGPLAN Empirical Evaluation Guidelines  Make benchmarks reproducible Use full applications, not micro-benchmarks (&amp;ldquo;kernels&amp;rdquo;) Run many trials (5 isn&amp;rsquo;t enough) Report data distribution (histogram, along with summary statistics)   If I had to run a benchmark, what would I do?  Ensure system is quiet, see this link, and this link  Disable CPU frequency scaling / power management Disable hyper threading Disable ASLR   Test on different systems  Different CPU Different OS Different compilers   For micro-benchmarks use a standard library, like Google&amp;rsquo;s Benchmark I wish there was an updated version of stabilizer, or a similar tool that could run the same program loaded at different offsets, so I would figure out the sensitivity   Scapy to the rescue!</description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2020-11-30</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2020-11-30/</link>
+      <pubDate>Mon, 30 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2020-11-30/</guid>
+      <description>AutoHotkey has a nifty script for typing Greek letters   I started the online course Improving your statistical inferences by Daniel Lakens. It&amp;rsquo;s been a great refresher. I am considering publishing my notes online.
+The course starts by looking at p values. If nothing else, everyone should go through the first week of the course.
+    H0 True H1 True     Significant finding False positive (α) True positive (1-α)   Non-significant finding True negative (1-β) False negative (β)    Here is a good visualization by Kristoffer Magnusson</description>
+    </item>
+    
     <item>
       <title>What I Learned 2020-11-23</title>
       <link>https://alipullup.github.io/posts/what-i-learned-2020-11-23/</link>

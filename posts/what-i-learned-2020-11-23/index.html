@@ -125,8 +125,11 @@ Motivated by the limited <code>cb</code> size, and difficulty in adding extensio
 <li>Data is related to skb/packet aggregate, and</li>
 <li>Data should be free&rsquo;d when skb is free&rsquo;d, and</li>
 <li>Data is not going to be needed in the normal case (udp, tcp, &hellip;), and</li>
-<li>No actions needed on clone/free (e.g. callbacks)
-Alternatives:</li>
+<li>No actions needed on clone/free (e.g. callbacks)</li>
+</ul>
+</li>
+<li>Alternatives to adding data in SKB extensions:
+<ul>
 <li>Store data in shared info <code>struct skb_shared_info</code> block (unchanged on clone), or</li>
 <li>Add second control buffer block at end of <code>struct sk_buff</code>, or</li>
 <li>Add a control block at end of <code>struct skb_buff_fclones</code> (only works for outgoing SKBs allocated via <code>alloc_skb_fclone</code>)</li>
