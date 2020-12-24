@@ -95,6 +95,23 @@
 
   <header class="entry-header">
     <h2>
+      U-Boot Notes
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Introduction The following document contains some notes I took while debugging U-Boot board initialization for the MIPS and ARM platforms.
+On one platform we had issues with the QSPI flash. On another platform we had memory issues. Yet another platform had issues with calling certain functions before some hardware was initialized.
+ Startup The system jumps to the _start routine. This is mapped to a known address in Flash.
+The board_init_f function calls various other functions:...</p>
+  </section>
+  <footer class="entry-footer">June 13, 2013
+</footer>
+  <a class="entry-link" aria-label="post link to U-Boot Notes" href="https://alipullup.github.io/posts/u-boot-notes/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
       Disk Encryption Overview
     </h2>
   </header>
