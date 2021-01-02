@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>What I Learned 2020-12-21 - Ali&#39;s Posts</title>
+<title>What I Learned 2020-12-28 - Ali&#39;s Posts</title>
 
 <meta name="keywords" content="what-i-learned" />
-<meta name="description" content="If I ever work for a company that produces silicon that must run on Linux (again), I would highly recommend nightly performance tests that use the newest kernel. Since I started reading the kernel mailing lists, I see how many performance regressions are introduced, and only reported by users. For example, see this bug I&rsquo;ve lost a lot of trust in the standard bodies. After the Dual EC DRBG backdoor, I ran into the controversy around the WPA3 Dragonfly Handshake.">
+<meta name="description" content="P99 is a set of macro and function definitions to ease programming &ldquo;modern C&rdquo; (C99). P99 API documentation. Well documented, but rather large. Doesn&rsquo;t seem to be actively updated (perhaps there is no need?) If -ffreestanding is given to GCC, then __STDC_HOSTED__ will be set to 0 The book Computer Age Statistical Inference by Efron and Hastie seems well written. Browsed through the first few chapters and was impressed. Some exercises available here.">
 <meta name="author" content="">
-<link rel="canonical" href="https://alipullup.github.io/posts/what-i-learned-2020-12-21/" />
+<link rel="canonical" href="https://alipullup.github.io/posts/what-i-learned-2020-12-28/" />
 <link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
     as="style">
 
@@ -88,34 +88,25 @@
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">
-      What I Learned 2020-12-21
+      What I Learned 2020-12-28
     </h1>
-    <div class="post-meta">December 21, 2020
+    <div class="post-meta">December 28, 2020
 
     </div>
   </header> 
 
   <div class="post-content">
 <ul>
-<li>If I ever work for a company that produces silicon that must run on Linux (again),
-I would highly recommend nightly performance tests that use the newest kernel.
-Since I started reading the kernel mailing lists, I see how many performance regressions are
-introduced, and only reported by users.
-For example, see <a href="https://bugzilla.kernel.org/show_bug.cgi?id=209913">this bug</a></li>
-<li>I&rsquo;ve lost a lot of trust in the standard bodies. After the
-<a href="https://en.wikipedia.org/wiki/Dual_EC_DRBG">Dual EC DRBG backdoor</a>, I ran into
-the controversy around the <a href="https://sarwiki.informatik.hu-berlin.de/WPA3_Dragonfly_Handshake">WPA3 Dragonfly Handshake</a>.
-The <a href="https://mailarchive.ietf.org/arch/msg/tls/M9Wrwd0iDEAk-PztgmrqIPEXvao/">mailing list threads</a>
-are unprofessional, and sad to read. <a href="https://arstechnica.com/information-technology/2013/12/critics-nsa-agent-co-chairing-key-crypto-standards-body-should-be-removed/">Summary by arstechnica</a>.
-I first learned about this &ldquo;drama&rdquo; from <a href="https://news.ycombinator.com/item?id=6942145">this Hacker News</a> post.</li>
-<li>There is a surprising amount of memory errors (e.g. double free, memory leak) in the Linux kernel.
-I wonder what workarounds exists? Or perhaps kernel drivers should be written in <a href="https://www.rust-lang.org/">Rust</a>?</li>
-<li>Command to receive data over network, write to disk and calculate SHA1 checksum:
-<code>sudo -E bash -c 'nc -l -p 12345 | pv | tee /dev/sda &gt;(sha1sum) &gt;/dev/null'</code></li>
-<li>The same as above, except sending via SSH
-<code>ssh user@host &quot;sudo -E bash -c 'tee /dev/sda &gt;(sha1sum) &gt;/dev/null'&quot; &lt; localfile</code></li>
-<li>Windows has no decent <code>netcat</code> that isn&rsquo;t flagged by my virus scanner. Ended up writing a simple Python script.</li>
-<li>I had forgotten that I can exclude search terms, e.g. <code>-w3schools</code> e.g. <code>html img -w3schools</code>, see <a href="https://support.google.com/websearch/answer/2466433?hl=en">Google Search Help</a></li>
+<li><a href="https://gitlab.inria.fr/gustedt/p99/">P99</a> is a set of macro and function definitions
+to ease programming &ldquo;modern C&rdquo; (C99). 
+<a href="https://p99.gforge.inria.fr/p99-html/index.html">P99 API documentation</a>.
+Well documented, but rather large. Doesn&rsquo;t seem to be actively updated (perhaps there is no need?)</li>
+<li>If <code>-ffreestanding</code> is given to GCC, then <code>__STDC_HOSTED__</code> will be set to <code>0</code></li>
+<li>The book <a href="https://web.stanford.edu/~hastie/CASI/">Computer Age Statistical Inference</a> by Efron and Hastie
+seems well written. Browsed through the first few chapters and was impressed.
+Some <a href="https://web.stanford.edu/~hastie/CASI_files/PDF/CASI_Exercises.pdf">exercises available here</a>.</li>
+<li>I didn&rsquo;t know that <a href="https://www.microsoft.com/en-us/research/people/cmbishop/">Pattern Recognition and Machine Learning</a>
+by Christopher Bishop is available for free as a PDF!</li>
 </ul>
 
 </div>
