@@ -7,7 +7,36 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 28 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What I Learned 2021-01-18</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-01-18/</link>
+      <pubDate>Mon, 18 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-01-18/</guid>
+      <description>bladeRF-wiphy is a complete 802.11 implementation, including the VHDL! This would&amp;rsquo;ve been a great read before I started my last job.   IEEE 1588/PTP delay request response Online discussions of PTP/1588 give the formula: delay = [(t2 - t1) + (t4 - t3)]/2.
+However, I find this confusing: I think it is better written as [(t4 - t1) - (t3 - t2)]/2.
+ The total exchange using timestamps from master: t4 - t1 = (receivedTimestamp of Delay_Resp - originalTimestamp of Sync) Subtract from this, the time from the slave: t3 - t2, which should leave t_ms + t_sm (time from master to slave, and time from slave to master) Assuming these two are equivalent to t_transit, we are left with 2 * t_transit, thus the division by 2 leaves us the single direction path delay.</description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2021-01-11</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-01-11/</link>
+      <pubDate>Mon, 11 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-01-11/</guid>
+      <description>PTP has 1-Step and 2-Step implementations. In PTP 1-Step, the time stamp from the master clock is included in the first Sync message. PTP transparent clocks adjust the correctionField in Sync and Delay_Request messages PTP transparent clock can use the PTPv2 Reserved field (offset 16, size 4 bytes) to store a timestamp on ingress. PTP has a Peer to Peer (P2P) mode, as well as the normal End to End (E2E) mode The Peer to Peer mode uses PDelay_Request, and PDelay_Response messages in 1-Step mode, and additional PDelay_Response_Follow_Up message in 2-Step mode.</description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2021-01-04</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-01-04/</link>
+      <pubDate>Mon, 04 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-01-04/</guid>
+      <description>There exists IEE 802.11bb which is a light based protocol (aka &amp;ldquo;Li-Fi&amp;rdquo;). BER-TLV and SIMPLE-TLV can be used to create a Type/Length/Value mapping. What&amp;rsquo;s interesting:  Type or Length can be variable length (SIMPLE-TLV fixes tag from 1..254 and length from 1..3 bytes) Variable length encoding as follows:  If value &amp;lt;= 0x7F: output value If value &amp;lt;= 0xFF: output 0x81, followed by value If value &amp;lt;= 0xFFFF: output 0x82, followed by big-endian value   Type has bit 5 (0x20) set if it&amp;rsquo;s a container.</description>
+    </item>
+    
     <item>
       <title>What I Learned 2020-12-28</title>
       <link>https://alipullup.github.io/posts/what-i-learned-2020-12-28/</link>

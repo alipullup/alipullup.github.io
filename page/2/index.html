@@ -92,6 +92,48 @@
 
   <header class="entry-header">
     <h2>
+      What I Learned 2020-11-09
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Left shift of uint16_t promotes it to an int, and will sign-extend it if assigning a 64-bit value, e.g. code like: uint64_t x; uint16_t y=0x8000; x=y&lt;&lt;16; will assign x to ffffffff80000000 TCP syn-cookies have lots of problems! Just saw a fix and Google search found various issues that have been found over time. Not clear if the syn cookie enabling is per-port or global. Qualcomm has an IP Accelerator built into some SoC....</p>
+  </section>
+  <footer class="entry-footer">November 11, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-11-09" href="https://alipullup.github.io/posts/what-i-learned-2020-11-09/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2020-11-02
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p> Ghidra - tons of tutorials on YouTube In search of other build systems: DBMS Kbuild Linux jargon: “Reverse Christmas tree” - put longest declaration in function at top syzbot - finds so many bugs automatically! Notes on how to submit patch to Linux mailing list Linux has a self tests directory to exercise individual code paths in the kernel Example of Linux self tests: PowerPC self tests  ...</p>
+  </section>
+  <footer class="entry-footer">November 2, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-11-02" href="https://alipullup.github.io/posts/what-i-learned-2020-11-02/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2020-10-26
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Linux facility MODULE_SOFTDEP for adding dependency between modules, even if one doesn’t use the symbol from the other Linux macros for dealing with atomic sections of code, see this API page  non_block_start() / non_block_end() might_sleep() / cant_sleep() / might_sleep_if(cond) cant_migrate()   Linux has deprecated in_irq() / in_interrupt() - see this email Use a passed in parameter instead, e.g. may_sleep Use lockdep_assert_held(lock) for checking MACSec 802.1AE uses hostapd/wpa_supplicant to do L2 security!...</p>
+  </section>
+  <footer class="entry-footer">October 26, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-10-26" href="https://alipullup.github.io/posts/what-i-learned-2020-10-26/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
       My experience with micro-services
     </h2>
   </header>

@@ -95,6 +95,50 @@
 
   <header class="entry-header">
     <h2>
+      What I Learned 2021-01-18
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>bladeRF-wiphy is a complete 802.11 implementation, including the VHDL! This would’ve been a great read before I started my last job.   IEEE 1588/PTP delay request response Online discussions of PTP/1588 give the formula: delay = [(t2 - t1) &#43; (t4 - t3)]/2.
+However, I find this confusing: I think it is better written as [(t4 - t1) - (t3 - t2)]/2.
+ The total exchange using timestamps from master: t4 - t1 = (receivedTimestamp of Delay_Resp - originalTimestamp of Sync) Subtract from this, the time from the slave: t3 - t2, which should leave t_ms &#43; t_sm (time from master to slave, and time from slave to master) Assuming these two are equivalent to t_transit, we are left with 2 * t_transit, thus the division by 2 leaves us the single direction path delay....</p>
+  </section>
+  <footer class="entry-footer">January 18, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-01-18" href="https://alipullup.github.io/posts/what-i-learned-2021-01-18/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2021-01-11
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>PTP has 1-Step and 2-Step implementations. In PTP 1-Step, the time stamp from the master clock is included in the first Sync message. PTP transparent clocks adjust the correctionField in Sync and Delay_Request messages PTP transparent clock can use the PTPv2 Reserved field (offset 16, size 4 bytes) to store a timestamp on ingress. PTP has a Peer to Peer (P2P) mode, as well as the normal End to End (E2E) mode The Peer to Peer mode uses PDelay_Request, and PDelay_Response messages in 1-Step mode, and additional PDelay_Response_Follow_Up message in 2-Step mode....</p>
+  </section>
+  <footer class="entry-footer">January 11, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-01-11" href="https://alipullup.github.io/posts/what-i-learned-2021-01-11/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2021-01-04
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>There exists IEE 802.11bb which is a light based protocol (aka “Li-Fi”). BER-TLV and SIMPLE-TLV can be used to create a Type/Length/Value mapping. What’s interesting:  Type or Length can be variable length (SIMPLE-TLV fixes tag from 1..254 and length from 1..3 bytes) Variable length encoding as follows:  If value &lt;= 0x7F: output value If value &lt;= 0xFF: output 0x81, followed by value If value &lt;= 0xFFFF: output 0x82, followed by big-endian value   Type has bit 5 (0x20) set if it’s a container....</p>
+  </section>
+  <footer class="entry-footer">January 4, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-01-04" href="https://alipullup.github.io/posts/what-i-learned-2021-01-04/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
       What I Learned 2020-12-28
     </h2>
   </header>
@@ -190,48 +234,6 @@ The course starts by looking at p values. If nothing else, everyone should go th
   <footer class="entry-footer">November 16, 2020
 </footer>
   <a class="entry-link" aria-label="post link to What I Learned 2020-11-16" href="https://alipullup.github.io/posts/what-i-learned-2020-11-16/"></a>
-</article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2020-11-09
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Left shift of uint16_t promotes it to an int, and will sign-extend it if assigning a 64-bit value, e.g. code like: uint64_t x; uint16_t y=0x8000; x=y&lt;&lt;16; will assign x to ffffffff80000000 TCP syn-cookies have lots of problems! Just saw a fix and Google search found various issues that have been found over time. Not clear if the syn cookie enabling is per-port or global. Qualcomm has an IP Accelerator built into some SoC....</p>
-  </section>
-  <footer class="entry-footer">November 11, 2020
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2020-11-09" href="https://alipullup.github.io/posts/what-i-learned-2020-11-09/"></a>
-</article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2020-11-02
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p> Ghidra - tons of tutorials on YouTube In search of other build systems: DBMS Kbuild Linux jargon: “Reverse Christmas tree” - put longest declaration in function at top syzbot - finds so many bugs automatically! Notes on how to submit patch to Linux mailing list Linux has a self tests directory to exercise individual code paths in the kernel Example of Linux self tests: PowerPC self tests  ...</p>
-  </section>
-  <footer class="entry-footer">November 2, 2020
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2020-11-02" href="https://alipullup.github.io/posts/what-i-learned-2020-11-02/"></a>
-</article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2020-10-26
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Linux facility MODULE_SOFTDEP for adding dependency between modules, even if one doesn’t use the symbol from the other Linux macros for dealing with atomic sections of code, see this API page  non_block_start() / non_block_end() might_sleep() / cant_sleep() / might_sleep_if(cond) cant_migrate()   Linux has deprecated in_irq() / in_interrupt() - see this email Use a passed in parameter instead, e.g. may_sleep Use lockdep_assert_held(lock) for checking MACSec 802.1AE uses hostapd/wpa_supplicant to do L2 security!...</p>
-  </section>
-  <footer class="entry-footer">October 26, 2020
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2020-10-26" href="https://alipullup.github.io/posts/what-i-learned-2020-10-26/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

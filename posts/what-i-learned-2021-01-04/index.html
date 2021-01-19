@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>Tags - Ali&#39;s Posts</title>
+<title>What I Learned 2021-01-04 - Ali&#39;s Posts</title>
 
-<meta name="keywords" content="" />
-<meta name="description" content="">
+<meta name="keywords" content="what-i-learned" />
+<meta name="description" content="There exists IEE 802.11bb which is a light based protocol (aka &ldquo;Li-Fi&rdquo;). BER-TLV and SIMPLE-TLV can be used to create a Type/Length/Value mapping. What&rsquo;s interesting:  Type or Length can be variable length (SIMPLE-TLV fixes tag from 1..254 and length from 1..3 bytes) Variable length encoding as follows:  If value &lt;= 0x7F: output value If value &lt;= 0xFF: output 0x81, followed by value If value &lt;= 0xFFFF: output 0x82, followed by big-endian value   Type has bit 5 (0x20) set if it&rsquo;s a container.">
 <meta name="author" content="">
-<link rel="canonical" href="https://alipullup.github.io/tags/" />
+<link rel="canonical" href="https://alipullup.github.io/posts/what-i-learned-2021-01-04/" />
 <link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
     as="style">
 
@@ -23,14 +23,13 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.78.1" />
-<link rel="alternate" type="application/rss&#43;xml" href="https://alipullup.github.io/tags/index.xml">
 
 
 
 
 </head>
 
-<body class="list" id="top">
+<body class="single" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.body.classList.add('dark');
@@ -85,17 +84,56 @@
 </header>
 
     <main class="main">
-<header class="page-header">
-    <h1>Tags</h1>
-</header>
 
-<ul class="terms-tags">
-    <li>
-        <a href="https://alipullup.github.io/tags/what-i-learned/">what-i-learned <sup><strong><sup>13</sup></strong></sup> </a>
-    </li>
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">
+      What I Learned 2021-01-04
+    </h1>
+    <div class="post-meta">January 4, 2021
+
+    </div>
+  </header> 
+
+  <div class="post-content">
+<ul>
+<li>There exists IEE <a href="https://en.wikipedia.org/wiki/Li-Fi">802.11bb</a>
+which is a light based protocol (aka &ldquo;Li-Fi&rdquo;).</li>
+<li><a href="https://stackoverflow.com/questions/18853800/simple-tlv-vs-ber-tlv">BER-TLV and SIMPLE-TLV</a>
+can be used to create a Type/Length/Value mapping. What&rsquo;s interesting:
+<ul>
+<li>Type or Length can be variable length (SIMPLE-TLV fixes tag from 1..254 and length from 1..3 bytes)</li>
+<li>Variable length encoding as follows:
+<ul>
+<li>If value &lt;= 0x7F: output value</li>
+<li>If value &lt;= 0xFF: output 0x81, followed by value</li>
+<li>If value &lt;= 0xFFFF: output 0x82, followed by big-endian value</li>
+</ul>
+</li>
+<li>Type has bit 5 (0x20) set if it&rsquo;s a container. A container must contain other TLVs.</li>
+<li>Type may have bit 7:6 (mask 0xC0) set to 1 to indicate application specific</li>
+<li>Wikipedia has a <a href="https://en.wikipedia.org/wiki/X.690#Types">registry of types</a></li>
+</ul>
+</li>
+<li>EEVblog has a nice overview of <a href="https://www.youtube.com/watch?v=8ruFVmxf0zs">thermal resistance</a>
+Some notes I took:
+<ul>
+<li>Thermal resistance °C/W - with a RθJ-C (junction to case) of 10, if I dissipated 1W, then at 20°C ambient, the junction temperature would be 30°C</li>
+<li>The Rθ given in the data sheet for heat sinks are ideal - add 30% or so due to spreading resistance</li>
+<li>Air flow over heat sink is the main factor</li>
+</ul>
+</li>
+<li>The Wikipedia page on <a href="https://en.wikipedia.org/wiki/Thermal_management_(electronics)">thermal management</a>
+has more information, including a link to Chapter 15 PDF of &ldquo;Heat and Mass Transfer: Fundamentals and Applications&rdquo;.</li>
 </ul>
 
-
+</div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://alipullup.github.io/tags/what-i-learned">what-i-learned</a></li>
+    </ul>
+  </footer>
+</article>
     </main><footer class="footer">
     <span>This work is licensed under a Creative Commons Attribution 4.0 International License.</span>
     <span>&middot;</span>
@@ -111,7 +149,8 @@
 </a>
 
 
-
+<script src="https://alipullup.github.io/assets/js/highlight.min.e7afc2928c0925d65c4732dfebe147014d91299a98e819e4b42f25c4fa68e91c.js" integrity="sha256-56/CkowJJdZcRzLf6&#43;FHAU2RKZqY6BnktC8lxPpo6Rw="></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <script>
     window.onload = function () {
         if (localStorage.getItem("menu-scroll-position")) {

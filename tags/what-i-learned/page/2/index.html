@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>Posts - Ali&#39;s Posts</title>
+<title>what-i-learned - Ali&#39;s Posts</title>
 
 <meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://alipullup.github.io/posts/" />
+<link rel="canonical" href="https://alipullup.github.io/tags/what-i-learned/" />
 <link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
     as="style">
 
@@ -23,7 +23,7 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.78.1" />
-<link rel="alternate" type="application/rss&#43;xml" href="https://alipullup.github.io/posts/index.xml">
+<link rel="alternate" type="application/rss&#43;xml" href="https://alipullup.github.io/tags/what-i-learned/index.xml">
 
 
 
@@ -86,12 +86,12 @@
 
     <main class="main"> 
 <header class="page-header">
-  <h1>Posts</h1>
+  <h1>what-i-learned</h1>
 </header>
 
 
 
-<article class="post-entry"> 
+<article class="post-entry tag-entry"> 
 
   <header class="entry-header">
     <h2>
@@ -105,7 +105,7 @@
 </footer>
   <a class="entry-link" aria-label="post link to What I Learned 2020-11-09" href="https://alipullup.github.io/posts/what-i-learned-2020-11-09/"></a>
 </article>
-<article class="post-entry"> 
+<article class="post-entry tag-entry"> 
 
   <header class="entry-header">
     <h2>
@@ -119,7 +119,7 @@
 </footer>
   <a class="entry-link" aria-label="post link to What I Learned 2020-11-02" href="https://alipullup.github.io/posts/what-i-learned-2020-11-02/"></a>
 </article>
-<article class="post-entry"> 
+<article class="post-entry tag-entry"> 
 
   <header class="entry-header">
     <h2>
@@ -133,94 +133,9 @@
 </footer>
   <a class="entry-link" aria-label="post link to What I Learned 2020-10-26" href="https://alipullup.github.io/posts/what-i-learned-2020-10-26/"></a>
 </article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      My experience with micro-services
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Overview I wrote the following after my experience in architecting a system around microservices.
-The implementation did not go as smoothly as expected, and I wanted to reflect on what went wrong.
-To channel Jamie Z:
- Some people, when faced with a problem think “I know, I’ll use microservices.” Now they have 2^N problems.
- I think we used microservices for the wrong reasons:
- If you’re worried about future extensibility, then use a well defined interface to a library....</p>
-  </section>
-  <footer class="entry-footer">September 16, 2016
-</footer>
-  <a class="entry-link" aria-label="post link to My experience with micro-services" href="https://alipullup.github.io/posts/my-experience-with-microservices/"></a>
-</article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      U-Boot Notes
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Introduction The following document contains some notes I took while debugging U-Boot board initialization for the MIPS and ARM platforms.
-On one platform we had issues with the QSPI flash. On another platform we had memory issues. Yet another platform had issues with calling certain functions before some hardware was initialized.
- Startup The system jumps to the _start routine. This is mapped to a known address in Flash.
-The board_init_f function calls various other functions:...</p>
-  </section>
-  <footer class="entry-footer">June 13, 2013
-</footer>
-  <a class="entry-link" aria-label="post link to U-Boot Notes" href="https://alipullup.github.io/posts/u-boot-notes/"></a>
-</article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      Disk Encryption Overview
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Introduction This document describes disk encryption implemented using a combination of software and FPGA.
---Data--&gt;FPGA--&gt;Disks|MicrocontrollerThe data was encrypted using AES, in counter mode, with flexible key width.
-For various reasons, we did not use an authenticated encryption mode.
-A FPGA was responsible for encryption, to keep up with the high data rate. Control software running on a microcontroller was responsible for loading up the AES key schedule during bulk streaming operations....</p>
-  </section>
-  <footer class="entry-footer">September 16, 2008
-</footer>
-  <a class="entry-link" aria-label="post link to Disk Encryption Overview" href="https://alipullup.github.io/posts/disk-encryption-overview/"></a>
-</article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      Gigabit Ethernet Protocol
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Introduction This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.
- Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data packet, wait the IPG amount, then send the next packet. Round-trip time (RTT) was determined using a timestamp embedded int he packets....</p>
-  </section>
-  <footer class="entry-footer">January 24, 2006
-</footer>
-  <a class="entry-link" aria-label="post link to Gigabit Ethernet Protocol" href="https://alipullup.github.io/posts/gigabit-ethernet-protocol/"></a>
-</article>
-<article class="post-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      Under the Hood of Ada
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Introduction The following is an old document I wrote when debugging the GCC Ada front-end for MIPS. Our platform was not officially supported and I was tasked with finding and fixing various issued related to exceptions, and tasking.
-I’ve used that -gnatG switch to look at the processed source produced by GNAT and done some analysis. What follows is a summary and highlights from that analysis.
-Exceptions The exception
-Blocking_Error : exception; This is turned into...</p>
-  </section>
-  <footer class="entry-footer">April 1, 2005
-</footer>
-  <a class="entry-link" aria-label="post link to Under the Hood of Ada" href="https://alipullup.github.io/posts/under-the-hood-of-ada/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="prev" href="/posts/">« Prev Page</a>
+    <a class="prev" href="/tags/what-i-learned/">« Prev Page</a>
   </nav>
 </footer>
 
@@ -239,8 +154,7 @@ Blocking_Error : exception; This is turned into...</p>
 </a>
 
 
-<script src="https://alipullup.github.io/assets/js/highlight.min.e7afc2928c0925d65c4732dfebe147014d91299a98e819e4b42f25c4fa68e91c.js" integrity="sha256-56/CkowJJdZcRzLf6&#43;FHAU2RKZqY6BnktC8lxPpo6Rw="></script>
-<script>hljs.initHighlightingOnLoad();</script>
+
 <script>
     window.onload = function () {
         if (localStorage.getItem("menu-scroll-position")) {
