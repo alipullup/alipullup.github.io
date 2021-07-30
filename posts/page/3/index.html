@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>What I Learned 2021-01-18 - Ali&#39;s Posts</title>
+<title>Posts - Ali&#39;s Posts</title>
 
-<meta name="keywords" content="what-i-learned" />
-<meta name="description" content="bladeRF-wiphy is a complete 802.11 implementation, including the VHDL! This would&rsquo;ve been a great read before I started my last job. Spent a bunch more time updating PTP 1588 transparent clock code to deal with VLANs  What happens to trunk port vs. access What happens with VLANs - port based VLAN vs. native What happens if the domain doesn&rsquo;t match Which counters are helpful in debugging &hellip; and so on &hellip;    IEEE 1588/PTP delay request response Online discussions of PTP/1588 give the formula: delay = [(t2 - t1) &#43; (t4 - t3)]/2.">
+<meta name="keywords" content="" />
+<meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://alipullup.github.io/posts/what-i-learned-2021-01-18/" />
+<link rel="canonical" href="https://alipullup.github.io/posts/" />
 <link href="https://alipullup.github.io/assets/css/stylesheet.min.fbd06d2c077ce980d90f87ea03ecde24ccdaf367319e63b97387bac5a9bcf698.css" integrity="sha256-&#43;9BtLAd86YDZD4fqA&#43;zeJMza82cxnmO5c4e6xam89pg=" rel="preload stylesheet"
     as="style">
 
@@ -23,13 +23,14 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.78.1" />
+<link rel="alternate" type="application/rss&#43;xml" href="https://alipullup.github.io/posts/index.xml">
 
 
 
 
 </head>
 
-<body class="single" id="top">
+<body class="list" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.body.classList.add('dark');
@@ -83,87 +84,118 @@
     </nav>
 </header>
 
-    <main class="main">
+    <main class="main"> 
+<header class="page-header">
+  <h1>Posts</h1>
+</header>
 
-<article class="post-single">
-  <header class="post-header">
-    <h1 class="post-title">
-      What I Learned 2021-01-18
-    </h1>
-    <div class="post-meta">January 18, 2021
 
-    </div>
-  </header> 
 
-  <div class="post-content">
-<ul>
-<li><a href="https://www.nuand.com/bladeRF-wiphy/">bladeRF-wiphy</a> is a complete 802.11 implementation,
-including the VHDL! This would&rsquo;ve been a great read before I started my last job.</li>
-<li>Spent a bunch more time updating PTP 1588 transparent clock code to deal with VLANs
-<ul>
-<li>What happens to trunk port vs. access</li>
-<li>What happens with VLANs - port based VLAN vs. native</li>
-<li>What happens if the domain doesn&rsquo;t match</li>
-<li>Which counters are helpful in debugging</li>
-<li>&hellip; and so on &hellip;</li>
-</ul>
-</li>
-</ul>
-<h2 id="ieee-1588ptp-delay-request-response">IEEE 1588/PTP delay request response<a hidden class="anchor" aria-hidden="true" href="#ieee-1588ptp-delay-request-response">#</a></h2>
-<p>Online discussions of PTP/1588 give the formula:  <code>delay = [(t2 - t1) + (t4 - t3)]/2</code>.</p>
-<p>However, I find this confusing: I think it is better written as <code>[(t4 - t1) - (t3 - t2)]/2</code>.</p>
-<p><img src="/image/ptp-delay-request-response.png" alt="PTP delay request response"></p>
-<ol>
-<li>The total exchange using timestamps from master: <code>t4 - t1 = (receivedTimestamp of Delay_Resp - originalTimestamp of Sync)</code></li>
-<li>Subtract from this, the time from the slave: <code>t3 - t2</code>, which should leave <code>t_ms + t_sm</code> (time from master to slave, and time from slave to master)</li>
-<li>Assuming these two are equivalent to <code>t_transit</code>, we are left with <code>2 * t_transit</code>, thus the division by 2 leaves us the single direction path delay.</li>
-</ol>
-<pre><code>meanPathDelay =
-	[ (receivedTimestamp of Delay_Resp - originalTimestamp of Sync) 
-	- (t3 - t2) 
-	- correctionField of Sync 
-	- correctionField of Delay_Resp ] / 2
-</code></pre><h2 id="how-to-give-good-feedback-on-written-assignments">How to give good feedback on written assignments<a hidden class="anchor" aria-hidden="true" href="#how-to-give-good-feedback-on-written-assignments">#</a></h2>
-<p>These are from <a href="https://coursera.community/study-tips-6/giving-feedback-116">Coursera&rsquo;s Giving Feedback</a> post.</p>
-<p>There is a tortured <a href="https://en.wikipedia.org/wiki/Backronym">backronym</a> pressed into service: F.A.S.T</p>
-<ul>
-<li>Feed-forward: Explain <em>why</em> feedback will help: focus on goals and future</li>
-<li>Actionable: Specific, actionable information</li>
-<li>Succinct: Focus only on the most important things</li>
-<li>Timely</li>
-</ul>
-<p>I think it&rsquo;s useful to have a checklist:</p>
-<ul>
-<li>If applicable: introduce your background, and say something positive</li>
-<li>If applicable: refer to any industry specific guidelines (criteria used to evaluate)</li>
-<li>Does the task accomplish what it set out to do?</li>
-<li>If there are technical requirements: focus on these, example:
-<ul>
-<li>Format: title, front-matter, bibliography, footnotes etc.</li>
-<li>Citations, evidence</li>
-</ul>
-</li>
-<li>If applicable: is enough background provided for a reader to understand the task?</li>
-<li>If applicable: are links to further reading, or previous work, provided?</li>
-<li>If applicable: are their tables / charts / figures? are they legible?</li>
-<li>If applicable: are confidence intervals given for point estimates?</li>
-<li>If applicable: point to flaws in reasoning
-<ul>
-<li>If applicable: logical fallacies, or false reasoning</li>
-<li>If applicable: contradictory or overlooked aspects</li>
-</ul>
-</li>
-<li>Provide concrete solutions to major problems found</li>
-<li>Obvious: punctuation, typos, spelling, word form, etc.</li>
-</ul>
+<article class="post-entry"> 
 
-</div>
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://alipullup.github.io/tags/what-i-learned">what-i-learned</a></li>
-    </ul>
-  </footer>
+  <header class="entry-header">
+    <h2>
+      What I Learned 2020-10-26
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Linux facility MODULE_SOFTDEP for adding dependency between modules, even if one doesn’t use the symbol from the other Linux macros for dealing with atomic sections of code, see this API page  non_block_start() / non_block_end() might_sleep() / cant_sleep() / might_sleep_if(cond) cant_migrate()   Linux has deprecated in_irq() / in_interrupt() - see this email Use a passed in parameter instead, e.g. may_sleep Use lockdep_assert_held(lock) for checking MACSec 802.1AE uses hostapd/wpa_supplicant to do L2 security!...</p>
+  </section>
+  <footer class="entry-footer">October 26, 2020
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2020-10-26" href="https://alipullup.github.io/posts/what-i-learned-2020-10-26/"></a>
 </article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      My experience with micro-services
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Overview I wrote the following after my experience in architecting a system around microservices.
+The implementation did not go as smoothly as expected, and I wanted to reflect on what went wrong.
+To channel Jamie Z:
+ Some people, when faced with a problem think “I know, I’ll use microservices.” Now they have 2^N problems.
+ I think we used microservices for the wrong reasons:
+ If you’re worried about future extensibility, then use a well defined interface to a library....</p>
+  </section>
+  <footer class="entry-footer">September 16, 2016
+</footer>
+  <a class="entry-link" aria-label="post link to My experience with micro-services" href="https://alipullup.github.io/posts/my-experience-with-microservices/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      U-Boot Notes
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Introduction The following document contains some notes I took while debugging U-Boot board initialization for the MIPS and ARM platforms.
+On one platform we had issues with the QSPI flash. On another platform we had memory issues. Yet another platform had issues with calling certain functions before some hardware was initialized.
+ Startup The system jumps to the _start routine. This is mapped to a known address in Flash.
+The board_init_f function calls various other functions:...</p>
+  </section>
+  <footer class="entry-footer">June 13, 2013
+</footer>
+  <a class="entry-link" aria-label="post link to U-Boot Notes" href="https://alipullup.github.io/posts/u-boot-notes/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      Disk Encryption Overview
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Introduction This document describes disk encryption implemented using a combination of software and FPGA.
+--Data--&gt;FPGA--&gt;Disks|MicrocontrollerThe data was encrypted using AES, in counter mode, with flexible key width.
+For various reasons, we did not use an authenticated encryption mode.
+A FPGA was responsible for encryption, to keep up with the high data rate. Control software running on a microcontroller was responsible for loading up the AES key schedule during bulk streaming operations....</p>
+  </section>
+  <footer class="entry-footer">September 16, 2008
+</footer>
+  <a class="entry-link" aria-label="post link to Disk Encryption Overview" href="https://alipullup.github.io/posts/disk-encryption-overview/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      Gigabit Ethernet Protocol
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Introduction This document gives a brief overview of a UDP based data transfer protocol. The protocol was implemented on a Xilinx FPGA, and a portable C client running on a Windows or Linux machine.
+ Bandwidth was managed by specifying an inter-packet gap (IPG) interval. The FPGA would send a data packet, wait the IPG amount, then send the next packet. Round-trip time (RTT) was determined using a timestamp embedded int he packets....</p>
+  </section>
+  <footer class="entry-footer">January 24, 2006
+</footer>
+  <a class="entry-link" aria-label="post link to Gigabit Ethernet Protocol" href="https://alipullup.github.io/posts/gigabit-ethernet-protocol/"></a>
+</article>
+<article class="post-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      Under the Hood of Ada
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Introduction The following is an old document I wrote when debugging the GCC Ada front-end for MIPS. Our platform was not officially supported and I was tasked with finding and fixing various issued related to exceptions, and tasking.
+I’ve used that -gnatG switch to look at the processed source produced by GNAT and done some analysis. What follows is a summary and highlights from that analysis.
+Exceptions The exception
+Blocking_Error : exception; This is turned into...</p>
+  </section>
+  <footer class="entry-footer">April 1, 2005
+</footer>
+  <a class="entry-link" aria-label="post link to Under the Hood of Ada" href="https://alipullup.github.io/posts/under-the-hood-of-ada/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="/posts/page/2/">« Prev Page</a>
+  </nav>
+</footer>
+
     </main><footer class="footer">
     <span>This work is licensed under a Creative Commons Attribution 4.0 International License.</span>
     <span>&middot;</span>

@@ -95,13 +95,123 @@
 
   <header class="entry-header">
     <h2>
+      What I Learned 2021-07-19
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Learned about Maven, Bouncy Castle Crypto APIs, CMS, RFC5652, and RFC3161 timestamps. Firmware signature for the win! smidump can pretty print MIBs Cisco audit logs includes hashes. At first I thought this would be a linear hash chain for non-repudiation, e.g. to ensure no one tampers with the logs. It turns out to be simpler: they periodically hash the output of show running-config, the file system etc. and put this in the audit logs....</p>
+  </section>
+  <footer class="entry-footer">July 19, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-07-19" href="https://alipullup.github.io/posts/what-i-learned-2021-07-19/"></a>
+</article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2021-07-12
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>The Microsoft Bcrypt* functions are for ephemeral keys, while Ncrypt* are for persistent keys Sample C&#43;&#43; source code to sign using Windows Ncrypt* API Code from OpenVPN using Microsoft Ncrypt* API Stanford CS166 has great presentations on  Approximate Membership Queries: Bloom filter, XOR filter Hashing and Sketching   VRF, Virtual Routing and Forwarding Software bill of materials Appropriate Software Security Control Types for Third Party Service and Product Providers  Mentioned the “vBSIMM” framework, which seems to be a consulting framework for making money However, the graphic associated with it was useful: Requirements and design: Security architecture review, threat modeling, risk control Development: Code review, Open source security validation, binary static scan (?...</p>
+  </section>
+  <footer class="entry-footer">July 12, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-07-12" href="https://alipullup.github.io/posts/what-i-learned-2021-07-12/"></a>
+</article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2021-07-05
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p> Some links for firmware signing  OpenPOWER sb-signing-utils OpenBSD Signify Open source Tripwire NetBSD’s mtree   Microsoft’s file checksum integrity verifier doesn’t have a Linux port Best practices for firmware code signing by Open Compute Intel has the eSPI protocol for tunneling I2C etc. How to fractionally encode bits  Basically given some numbers n_0 … n_k all less than N, we can encode them as: n_0 &#43; n_1 * N^1 &#43; n_2 * N^2 &#43; … &#43; n_k * N^k When decoding we can use division, and modulo to retrieve n_0 … n_k   Finite state entropy Must disable VLAN support in Windows for my VirtualBox VM to send/receive VLAN tagged frames VirtualBox incantation needed to resolve corporate LAN addresses  ...</p>
+  </section>
+  <footer class="entry-footer">July 5, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-07-05" href="https://alipullup.github.io/posts/what-i-learned-2021-07-05/"></a>
+</article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2021-06-24
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p> ARM has LISA (“Linux Integrated System Analysis”) - Python tools for automated regression testing of the Linux kernel ACME is a set of hardware for temperature/power monitoring sigrok is an open-source signal analysis software suite with a large list of supported hardware - logic analyzers, oscilliscopes, thermometers, etc. Notepad&#43;&#43; makes an acceptable Markdown editor if paired with syntax highlighting, and addition to function list Everything by voidtools is a neat application for finding files on Windows OBS Studio can be used to create nifty presentations - though you need a green screen  ...</p>
+  </section>
+  <footer class="entry-footer">June 24, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-06-24" href="https://alipullup.github.io/posts/what-i-learned-2021-06-24/"></a>
+</article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2021-05-17
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Another way of saying “real time system”, is to state that the “tempo” (time) is a critical factor. Summary of the paper Communication Breakdown: Analyzing CPU Usage in Commercial Web Workloads from 2004.  Static vs. dynamic web loads use CPU differently (duh!) Depending on workload, scheduling overhead (if many threads are spawned for short lived clients), networking overhead (TCP/IP and driver) dominate. For longer lived connections, the scheduling overhead is no longer the bottleneck, instead it’s the web server....</p>
+  </section>
+  <footer class="entry-footer">May 17, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-05-17" href="https://alipullup.github.io/posts/what-i-learned-2021-05-17/"></a>
+</article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2021-03-29
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p> Google’s rule of 2: don’t write code that handles unsafe input in an unsafe language.   ...</p>
+  </section>
+  <footer class="entry-footer">March 29, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-03-29" href="https://alipullup.github.io/posts/what-i-learned-2021-03-29/"></a>
+</article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2021-03-22
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p> Hedley contains C macros for compiler-specific functionality zpl is a C library with threads, data structures, etc. People recommended rsync.net as a simple backup solution Some useful DevOps tools/libraries for network devices  Netmiko extends the Python Paramiko SSH library to improve connectivity to network devices NAPALM abstracts common operations (e.g. save and load config) across different network devices (e.g. Cisco, Juniper) YANG contains IEEE YANG language modules    ...</p>
+  </section>
+  <footer class="entry-footer">March 22, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-03-22" href="https://alipullup.github.io/posts/what-i-learned-2021-03-22/"></a>
+</article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
+      What I Learned 2021-01-25
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Stanford has a website called Data Visualization and the Modern Imagination. The website has many interesting examples of charts, maps, and graphs. Likewise, National Atlas of Japan is beautiful. Some notes I took:  Pie-charts overlay on maps: area used to compare different regions, chart itself informs about the region. Same color is used across different charts (e.g. “red” always denotes foodstuffs) Out ring in pie-charts is used to indicate grouping Railway traffic volume is shown by thicker lines, passenger volume at station is shown by circular area (logarithmic)   “Edge” vs....</p>
+  </section>
+  <footer class="entry-footer">January 25, 2021
+</footer>
+  <a class="entry-link" aria-label="post link to What I Learned 2021-01-25" href="https://alipullup.github.io/posts/what-i-learned-2021-01-25/"></a>
+</article>
+<article class="post-entry tag-entry"> 
+
+  <header class="entry-header">
+    <h2>
       What I Learned 2021-01-18
     </h2>
   </header>
   <section class="entry-content">
-    <p>bladeRF-wiphy is a complete 802.11 implementation, including the VHDL! This would’ve been a great read before I started my last job.   IEEE 1588/PTP delay request response Online discussions of PTP/1588 give the formula: delay = [(t2 - t1) &#43; (t4 - t3)]/2.
-However, I find this confusing: I think it is better written as [(t4 - t1) - (t3 - t2)]/2.
- The total exchange using timestamps from master: t4 - t1 = (receivedTimestamp of Delay_Resp - originalTimestamp of Sync) Subtract from this, the time from the slave: t3 - t2, which should leave t_ms &#43; t_sm (time from master to slave, and time from slave to master) Assuming these two are equivalent to t_transit, we are left with 2 * t_transit, thus the division by 2 leaves us the single direction path delay....</p>
+    <p>bladeRF-wiphy is a complete 802.11 implementation, including the VHDL! This would’ve been a great read before I started my last job. Spent a bunch more time updating PTP 1588 transparent clock code to deal with VLANs  What happens to trunk port vs. access What happens with VLANs - port based VLAN vs. native What happens if the domain doesn’t match Which counters are helpful in debugging … and so on …    IEEE 1588/PTP delay request response Online discussions of PTP/1588 give the formula: delay = [(t2 - t1) &#43; (t4 - t3)]/2....</p>
   </section>
   <footer class="entry-footer">January 18, 2021
 </footer>
@@ -120,120 +230,6 @@ However, I find this confusing: I think it is better written as [(t4 - t1) - (t3
   <footer class="entry-footer">January 11, 2021
 </footer>
   <a class="entry-link" aria-label="post link to What I Learned 2021-01-11" href="https://alipullup.github.io/posts/what-i-learned-2021-01-11/"></a>
-</article>
-<article class="post-entry tag-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2021-01-04
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>There exists IEE 802.11bb which is a light based protocol (aka “Li-Fi”). BER-TLV and SIMPLE-TLV can be used to create a Type/Length/Value mapping. What’s interesting:  Type or Length can be variable length (SIMPLE-TLV fixes tag from 1..254 and length from 1..3 bytes) Variable length encoding as follows:  If value &lt;= 0x7F: output value If value &lt;= 0xFF: output 0x81, followed by value If value &lt;= 0xFFFF: output 0x82, followed by big-endian value   Type has bit 5 (0x20) set if it’s a container....</p>
-  </section>
-  <footer class="entry-footer">January 4, 2021
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2021-01-04" href="https://alipullup.github.io/posts/what-i-learned-2021-01-04/"></a>
-</article>
-<article class="post-entry tag-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2020-12-28
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>P99 is a set of macro and function definitions to ease programming “modern C” (C99). P99 API documentation. Well documented, but rather large. Doesn’t seem to be actively updated (perhaps there is no need?) If -ffreestanding is given to GCC, then __STDC_HOSTED__ will be set to 0 The book Computer Age Statistical Inference by Efron and Hastie seems well written. Browsed through the first few chapters and was impressed. Some exercises available here....</p>
-  </section>
-  <footer class="entry-footer">December 28, 2020
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2020-12-28" href="https://alipullup.github.io/posts/what-i-learned-2020-12-28/"></a>
-</article>
-<article class="post-entry tag-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2020-12-21
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>If I ever work for a company that produces silicon that must run on Linux (again), I would highly recommend nightly performance tests that use the newest kernel. Since I started reading the kernel mailing lists, I see how many performance regressions are introduced, and only reported by users. For example, see this bug I’ve lost a lot of trust in the standard bodies. After the Dual EC DRBG backdoor, I ran into the controversy around the WPA3 Dragonfly Handshake....</p>
-  </section>
-  <footer class="entry-footer">December 21, 2020
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2020-12-21" href="https://alipullup.github.io/posts/what-i-learned-2020-12-21/"></a>
-</article>
-<article class="post-entry tag-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2020-12-14
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p> I didn’t know there was a Research Wahlberg meme, see this twitter account. Interesting article about Haskell naming conventions Interesting Linux kernel issue where L1 ASPM was calculated incorrectly thus leading to slow network performance.  ...</p>
-  </section>
-  <footer class="entry-footer">December 14, 2020
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2020-12-14" href="https://alipullup.github.io/posts/what-i-learned-2020-12-14/"></a>
-</article>
-<article class="post-entry tag-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2020-12-07
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>ACM SIGPLAN Empirical Evaluation Guidelines  Make benchmarks reproducible Use full applications, not micro-benchmarks (“kernels”) Run many trials (5 isn’t enough) Report data distribution (histogram, along with summary statistics)   If I had to run a benchmark, what would I do?  Ensure system is quiet, see this link, and this link  Disable CPU frequency scaling / power management Disable hyper threading Disable ASLR   Test on different systems  Different CPU Different OS Different compilers   For micro-benchmarks use a standard library, like Google’s Benchmark I wish there was an updated version of stabilizer, or a similar tool that could run the same program loaded at different offsets, so I would figure out the sensitivity   Scapy to the rescue!...</p>
-  </section>
-  <footer class="entry-footer">December 7, 2020
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2020-12-07" href="https://alipullup.github.io/posts/what-i-learned-2020-12-07/"></a>
-</article>
-<article class="post-entry tag-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2020-11-30
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>AutoHotkey has a nifty script for typing Greek letters   I started the online course Improving your statistical inferences by Daniel Lakens. It’s been a great refresher. I am considering publishing my notes online.
-The course starts by looking at p values. If nothing else, everyone should go through the first week of the course.
-    H0 True H1 True     Significant finding False positive (α) True positive (1-α)   Non-significant finding True negative (1-β) False negative (β)    Here is a good visualization by Kristoffer Magnusson...</p>
-  </section>
-  <footer class="entry-footer">November 30, 2020
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2020-11-30" href="https://alipullup.github.io/posts/what-i-learned-2020-11-30/"></a>
-</article>
-<article class="post-entry tag-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2020-11-23
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>USB UserBenchmark website has benchmarks of USB flash drives. Linux supports “WWAN” (LTE) modems - I have no idea how these work! There is the USB cdc_mbim driver, but now there’s talk of adding a “WWAN” device. There are command line programs such as qmicli, mmcli, and mbicli. TuxMake provides “portable and repeatable Linux kernel builds”. There is also TuxBuild which provides Linux kernel builds as a service. Both tools are by Linaro....</p>
-  </section>
-  <footer class="entry-footer">November 23, 2020
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2020-11-23" href="https://alipullup.github.io/posts/what-i-learned-2020-11-23/"></a>
-</article>
-<article class="post-entry tag-entry"> 
-
-  <header class="entry-header">
-    <h2>
-      What I Learned 2020-11-16
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Linux device tree documentation can be written in YAML. Linux has hot and cold pages - for data a device will DMA to, you’d want to use a cold pages (using GPF_COLD allocation flag) - also see this link Freescale DPAA1 platforms will be getting support for XDP! 16-bit sign extension bug bites again: (ntohs(value) &lt;&lt; 16) will sign-extend when assigned to a 64-bit value A return trampoline (“retpoline”) may be enabled in GCC using -mindirect-branch=thunk-extern for the Linux kernel....</p>
-  </section>
-  <footer class="entry-footer">November 16, 2020
-</footer>
-  <a class="entry-link" aria-label="post link to What I Learned 2020-11-16" href="https://alipullup.github.io/posts/what-i-learned-2020-11-16/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

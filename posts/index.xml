@@ -7,16 +7,86 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 18 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 19 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://alipullup.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What I Learned 2021-07-19</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-07-19/</link>
+      <pubDate>Mon, 19 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-07-19/</guid>
+      <description>Learned about Maven, Bouncy Castle Crypto APIs, CMS, RFC5652, and RFC3161 timestamps. Firmware signature for the win! smidump can pretty print MIBs Cisco audit logs includes hashes. At first I thought this would be a linear hash chain for non-repudiation, e.g. to ensure no one tampers with the logs. It turns out to be simpler: they periodically hash the output of show running-config, the file system etc. and put this in the audit logs.</description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2021-07-12</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-07-12/</link>
+      <pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-07-12/</guid>
+      <description>The Microsoft Bcrypt* functions are for ephemeral keys, while Ncrypt* are for persistent keys Sample C++ source code to sign using Windows Ncrypt* API Code from OpenVPN using Microsoft Ncrypt* API Stanford CS166 has great presentations on  Approximate Membership Queries: Bloom filter, XOR filter Hashing and Sketching   VRF, Virtual Routing and Forwarding Software bill of materials Appropriate Software Security Control Types for Third Party Service and Product Providers  Mentioned the &amp;ldquo;vBSIMM&amp;rdquo; framework, which seems to be a consulting framework for making money However, the graphic associated with it was useful: Requirements and design: Security architecture review, threat modeling, risk control Development: Code review, Open source security validation, binary static scan (?</description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2021-07-05</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-07-05/</link>
+      <pubDate>Mon, 05 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-07-05/</guid>
+      <description> Some links for firmware signing  OpenPOWER sb-signing-utils OpenBSD Signify Open source Tripwire NetBSD&amp;rsquo;s mtree   Microsoft&amp;rsquo;s file checksum integrity verifier doesn&amp;rsquo;t have a Linux port Best practices for firmware code signing by Open Compute Intel has the eSPI protocol for tunneling I2C etc. How to fractionally encode bits  Basically given some numbers n_0 &amp;hellip; n_k all less than N, we can encode them as: n_0 + n_1 * N^1 + n_2 * N^2 + &amp;hellip; + n_k * N^k When decoding we can use division, and modulo to retrieve n_0 &amp;hellip; n_k   Finite state entropy Must disable VLAN support in Windows for my VirtualBox VM to send/receive VLAN tagged frames VirtualBox incantation needed to resolve corporate LAN addresses  </description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2021-06-24</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-06-24/</link>
+      <pubDate>Thu, 24 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-06-24/</guid>
+      <description> ARM has LISA (&amp;ldquo;Linux Integrated System Analysis&amp;rdquo;) - Python tools for automated regression testing of the Linux kernel ACME is a set of hardware for temperature/power monitoring sigrok is an open-source signal analysis software suite with a large list of supported hardware - logic analyzers, oscilliscopes, thermometers, etc. Notepad++ makes an acceptable Markdown editor if paired with syntax highlighting, and addition to function list Everything by voidtools is a neat application for finding files on Windows OBS Studio can be used to create nifty presentations - though you need a green screen  </description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2021-05-17</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-05-17/</link>
+      <pubDate>Mon, 17 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-05-17/</guid>
+      <description>Another way of saying &amp;ldquo;real time system&amp;rdquo;, is to state that the &amp;ldquo;tempo&amp;rdquo; (time) is a critical factor. Summary of the paper Communication Breakdown: Analyzing CPU Usage in Commercial Web Workloads from 2004.  Static vs. dynamic web loads use CPU differently (duh!) Depending on workload, scheduling overhead (if many threads are spawned for short lived clients), networking overhead (TCP/IP and driver) dominate. For longer lived connections, the scheduling overhead is no longer the bottleneck, instead it&amp;rsquo;s the web server.</description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2021-03-29</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-03-29/</link>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-03-29/</guid>
+      <description> Google&amp;rsquo;s rule of 2: don&amp;rsquo;t write code that handles unsafe input in an unsafe language.   </description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2021-03-22</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-03-22/</link>
+      <pubDate>Mon, 22 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-03-22/</guid>
+      <description> Hedley contains C macros for compiler-specific functionality zpl is a C library with threads, data structures, etc. People recommended rsync.net as a simple backup solution Some useful DevOps tools/libraries for network devices  Netmiko extends the Python Paramiko SSH library to improve connectivity to network devices NAPALM abstracts common operations (e.g. save and load config) across different network devices (e.g. Cisco, Juniper) YANG contains IEEE YANG language modules    </description>
+    </item>
+    
+    <item>
+      <title>What I Learned 2021-01-25</title>
+      <link>https://alipullup.github.io/posts/what-i-learned-2021-01-25/</link>
+      <pubDate>Mon, 25 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://alipullup.github.io/posts/what-i-learned-2021-01-25/</guid>
+      <description>Stanford has a website called Data Visualization and the Modern Imagination. The website has many interesting examples of charts, maps, and graphs. Likewise, National Atlas of Japan is beautiful. Some notes I took:  Pie-charts overlay on maps: area used to compare different regions, chart itself informs about the region. Same color is used across different charts (e.g. &amp;ldquo;red&amp;rdquo; always denotes foodstuffs) Out ring in pie-charts is used to indicate grouping Railway traffic volume is shown by thicker lines, passenger volume at station is shown by circular area (logarithmic)   &amp;ldquo;Edge&amp;rdquo; vs.</description>
+    </item>
+    
     <item>
       <title>What I Learned 2021-01-18</title>
       <link>https://alipullup.github.io/posts/what-i-learned-2021-01-18/</link>
       <pubDate>Mon, 18 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>https://alipullup.github.io/posts/what-i-learned-2021-01-18/</guid>
-      <description>bladeRF-wiphy is a complete 802.11 implementation, including the VHDL! This would&amp;rsquo;ve been a great read before I started my last job.   IEEE 1588/PTP delay request response Online discussions of PTP/1588 give the formula: delay = [(t2 - t1) + (t4 - t3)]/2.
-However, I find this confusing: I think it is better written as [(t4 - t1) - (t3 - t2)]/2.
- The total exchange using timestamps from master: t4 - t1 = (receivedTimestamp of Delay_Resp - originalTimestamp of Sync) Subtract from this, the time from the slave: t3 - t2, which should leave t_ms + t_sm (time from master to slave, and time from slave to master) Assuming these two are equivalent to t_transit, we are left with 2 * t_transit, thus the division by 2 leaves us the single direction path delay.</description>
+      <description>bladeRF-wiphy is a complete 802.11 implementation, including the VHDL! This would&amp;rsquo;ve been a great read before I started my last job. Spent a bunch more time updating PTP 1588 transparent clock code to deal with VLANs  What happens to trunk port vs. access What happens with VLANs - port based VLAN vs. native What happens if the domain doesn&amp;rsquo;t match Which counters are helpful in debugging &amp;hellip; and so on &amp;hellip;    IEEE 1588/PTP delay request response Online discussions of PTP/1588 give the formula: delay = [(t2 - t1) + (t4 - t3)]/2.</description>
     </item>
     
     <item>
